@@ -1,6 +1,6 @@
 <?php
 
-namespace net7\FilamentTaxonomies\Traits;
+namespace Net7\FilamentTaxonomies\Traits;
 
 trait TaxonomyTrait {
     

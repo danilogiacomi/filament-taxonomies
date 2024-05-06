@@ -1,6 +1,6 @@
 <?php
 
-namespace net7\FilamentTaxonomies\Commands;
+namespace Net7\FilamentTaxonomies\Commands;
 
 use Illuminate\Console\Command;
 

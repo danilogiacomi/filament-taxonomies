@@ -1,8 +1,8 @@
 <?php
 
-namespace net7\FilamentTaxonomies\Http\Resources;
+namespace Net7\FilamentTaxonomies\Http\Resources;
 
-use net7\FilamentTaxonomies\Models\Concept;
+use Net7\FilamentTaxonomies\Models\Concept;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 use ML\JsonLD\JsonLD;

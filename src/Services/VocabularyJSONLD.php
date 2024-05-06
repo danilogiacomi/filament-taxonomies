@@ -1,9 +1,9 @@
 <?php
 
-namespace net7\FilamentTaxonomies\Services;
+namespace Net7\FilamentTaxonomies\Services;
 
-use net7\FilamentTaxonomies\Models\ConceptSchema;
-use net7\FilamentTaxonomies\Models\Concept;
+use Net7\FilamentTaxonomies\Models\ConceptSchema;
+use Net7\FilamentTaxonomies\Models\Concept;
 use Illuminate\Support\Facades\Storage;
 use ML\JsonLD\JsonLD;
 

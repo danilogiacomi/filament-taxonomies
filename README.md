@@ -6,8 +6,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/net7/filament-taxonomies.svg?style=flat-square)](https://packagist.org/packages/net7/filament-taxonomies)
 
 
-
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+A Filament plugin to manage multi-level taxonomies 
 
 ## Installation
 
@@ -46,7 +45,7 @@ return [
 ## Usage
 
 ```php
-$filamentTaxonomies = new net7\FilamentTaxonomies();
+$filamentTaxonomies = new Net7\FilamentTaxonomies();
 echo $filamentTaxonomies->echoPhrase('Hello, net7!');
 ```
 

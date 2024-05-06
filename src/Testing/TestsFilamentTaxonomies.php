@@ -1,6 +1,6 @@
 <?php
 
-namespace net7\FilamentTaxonomies\Testing;
+namespace Net7\FilamentTaxonomies\Testing;
 
 use Livewire\Features\SupportTesting\Testable;
 

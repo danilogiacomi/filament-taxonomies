@@ -1,10 +1,10 @@
 <?php
 
-namespace net7\FilamentTaxonomies\Http\Controllers;
+namespace Net7\FilamentTaxonomies\Http\Controllers;
 
-use net7\FilamentTaxonomies\Models\Concept;
-use net7\FilamentTaxonomies\Models\ConceptSchema;
-use net7\FilamentTaxonomies\Services\VocabularyJSONLD;
+use Net7\FilamentTaxonomies\Models\Concept;
+use Net7\FilamentTaxonomies\Models\ConceptSchema;
+use Net7\FilamentTaxonomies\Services\VocabularyJSONLD;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;

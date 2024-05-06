@@ -1,16 +1,16 @@
 <?php
 
-namespace net7\FilamentTaxonomies\Facades;
+namespace Net7\FilamentTaxonomies\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \net7\FilamentTaxonomies\FilamentTaxonomies
+ * @see \Net7\FilamentTaxonomies\FilamentTaxonomies
  */
 class FilamentTaxonomies extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \net7\FilamentTaxonomies\FilamentTaxonomies::class;
+        return \Net7\FilamentTaxonomies\FilamentTaxonomies::class;
     }
 }

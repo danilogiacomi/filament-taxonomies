@@ -1,6 +1,6 @@
 <?php
 
-namespace net7\FilamentTaxonomies\Http\Resources;
+namespace Net7\FilamentTaxonomies\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace net7\FilamentTaxonomies\Models;
+namespace Net7\FilamentTaxonomies\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -36,7 +36,7 @@ class ConceptSchema extends Model
     */
     public function concepts()
     {
-        return $this->hasMany('\net7\FilamentTaxonomies\Models\Concept');
+        return $this->hasMany('\Net7\FilamentTaxonomies\Models\Concept');
     }
     /*
     |--------------------------------------------------------------------------

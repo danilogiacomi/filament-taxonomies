@@ -1,6 +1,6 @@
 <?php
 
-namespace net7\FilamentTaxonomies\Models;
+namespace Net7\FilamentTaxonomies\Models;
 
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 class Concept extends Model
 {
     use HasFactory;
-    use \net7\FilamentTaxonomies\Traits\TaxonomyTrait;
+    use \Net7\FilamentTaxonomies\Traits\TaxonomyTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -47,12 +47,12 @@ class Concept extends Model
     */
     public function parent()
     {
-        return $this->belongsTo('net7\FilamentTaxonomies\Models\Concept', 'parent_id');
+        return $this->belongsTo('Net7\FilamentTaxonomies\Models\Concept', 'parent_id');
     }
 
     public function conceptScheme()
     {
-        return $this->belongsTo('net7\FilamentTaxonomies\Models\ConceptSchema', 'concept_scheme_id');
+        return $this->belongsTo('Net7\FilamentTaxonomies\Models\ConceptSchema', 'concept_scheme_id');
     }
 
     /*

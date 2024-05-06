@@ -1,7 +1,7 @@
 <?php
-namespace net7\FilamentTaxonomies\Services;
+namespace Net7\FilamentTaxonomies\Services;
 
-use net7\FilamentTaxonomies\Services\MurucaCoreV2TeiPublisher;
+use Net7\FilamentTaxonomies\Services\MurucaCoreV2TeiPublisher;
 
 class TeipublisherService {
 

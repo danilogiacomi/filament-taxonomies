@@ -1,6 +1,6 @@
 <?php
 
-namespace net7\FilamentTaxonomies\Tests;
+namespace Net7\FilamentTaxonomies\Tests;
 
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
-use net7\FilamentTaxonomies\FilamentTaxonomiesServiceProvider;
+use Net7\FilamentTaxonomies\FilamentTaxonomiesServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -25,7 +25,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'net7\\FilamentTaxonomies\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'Net7\\FilamentTaxonomies\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 

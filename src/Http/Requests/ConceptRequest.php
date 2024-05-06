@@ -1,6 +1,6 @@
 <?php
 
-namespace net7\FilamentTaxonomies\Http\Requests;
+namespace Net7\FilamentTaxonomies\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

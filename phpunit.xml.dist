@@ -16,7 +16,7 @@
     backupStaticProperties="false"
 >
     <testsuites>
-        <testsuite name="net7 Test Suite">
+        <testsuite name="Net7 Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>

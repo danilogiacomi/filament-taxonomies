@@ -1,9 +1,9 @@
 <?php
 
-namespace net7\FilamentTaxonomies\Http\Controllers;
+namespace Net7\FilamentTaxonomies\Http\Controllers;
 
-use net7\FilamentTaxonomies\Models\Document;
-use net7\FilamentTaxonomies\Services\TeipublisherService;
+use Net7\FilamentTaxonomies\Models\Document;
+use Net7\FilamentTaxonomies\Services\TeipublisherService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;

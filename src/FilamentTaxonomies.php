@@ -1,6 +1,6 @@
 <?php
 
-namespace net7\FilamentTaxonomies;
+namespace Net7\FilamentTaxonomies;
 
 class FilamentTaxonomies
 {

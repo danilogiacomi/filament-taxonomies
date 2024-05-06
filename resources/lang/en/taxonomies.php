@@ -1,6 +1,6 @@
 <?php
 
-// translations for net7/FilamentTaxonomies
+// translations for Net7/FilamentTaxonomies
 return [
     //
 ];

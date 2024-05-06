@@ -1,6 +1,6 @@
 <?php
 
-namespace net7\FilamentTaxonomies\Services;
+namespace Net7\FilamentTaxonomies\Services;
 
 use ErrorException;
 use Psy\Readline\Hoa\Console;

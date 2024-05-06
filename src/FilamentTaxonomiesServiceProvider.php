@@ -1,6 +1,6 @@
 <?php
 
-namespace net7\FilamentTaxonomies;
+namespace Net7\FilamentTaxonomies;
 
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
@@ -13,8 +13,8 @@ use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use net7\FilamentTaxonomies\Commands\FilamentTaxonomiesCommand;
-use net7\FilamentTaxonomies\Testing\TestsFilamentTaxonomies;
+use Net7\FilamentTaxonomies\Commands\FilamentTaxonomiesCommand;
+use Net7\FilamentTaxonomies\Testing\TestsFilamentTaxonomies;
 
 class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
 {
@@ -93,7 +93,7 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
 
     protected function getAssetPackageName(): ?string
     {
-        return 'net7/filament-taxonomies';
+        return 'Net7/filament-taxonomies';
     }
 
     /**
