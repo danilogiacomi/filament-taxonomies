@@ -1,0 +1,70 @@
+{
+    "name": "net7/filament-taxonomies",
+    "description": "A Filament plugin to manage taxonomies",
+    "keywords": [
+        "Net7",
+        "laravel",
+        "filament-taxonomies"
+    ],
+    "homepage": "https://github.com/net7/filament-taxonomies",
+    "support": {
+        "issues": "https://github.com/net7/filament-taxonomies/issues",
+        "source": "https://github.com/net7/filament-taxonomies"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Danilo Giacomi",
+            "email": "giacomi@netseven.it",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "filament/filament": "^3.0",
+        "ml/json-ld": "^1.2",
+        "spatie/laravel-package-tools": "^1.15.0"
+    },
+    "require-dev": {
+        "nunomaduro/collision": "^7.9",
+        "orchestra/testbench": "^8.0",
+        "pestphp/pest": "^2.1",
+        "pestphp/pest-plugin-arch": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "net7\\FilamentTaxonomies\\": "src/",
+            "net7\\FilamentTaxonomies\\Database\\Factories\\": "database/factories/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "net7\\FilamentTaxonomies\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "net7\\FilamentTaxonomies\\FilamentTaxonomiesServiceProvider"
+            ],
+            "aliases": {
+                "FilamentTaxonomies": "net7\\FilamentTaxonomies\\Facades\\FilamentTaxonomies"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
