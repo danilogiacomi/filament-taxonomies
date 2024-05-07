@@ -103,8 +103,8 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
     {
         return [
             // AlpineComponent::make('filament-taxonomies', __DIR__ . '/../resources/dist/components/filament-taxonomies.js'),
-            Css::make('filament-taxonomies-styles', __DIR__ . '/../resources/dist/filament-taxonomies.css'),
-            Js::make('filament-taxonomies-scripts', __DIR__ . '/../resources/dist/filament-taxonomies.js'),
+            // Css::make('filament-taxonomies-styles', __DIR__ . '/../resources/dist/filament-taxonomies.css'),
+            // Js::make('filament-taxonomies-scripts', __DIR__ . '/../resources/dist/filament-taxonomies.js'),
         ];
     }
 

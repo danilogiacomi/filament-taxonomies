@@ -34,13 +34,13 @@
     },
     "autoload": {
         "psr-4": {
-            "net7\\FilamentTaxonomies\\": "src/",
-            "net7\\FilamentTaxonomies\\Database\\Factories\\": "database/factories/"
+            "Net7\\FilamentTaxonomies\\": "src/",
+            "Net7\\FilamentTaxonomies\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "net7\\FilamentTaxonomies\\Tests\\": "tests/"
+            "Net7\\FilamentTaxonomies\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -58,7 +58,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "net7\\FilamentTaxonomies\\FilamentTaxonomiesServiceProvider"
+                "Net7\\FilamentTaxonomies\\FilamentTaxonomiesServiceProvider"
             ],
             "aliases": {
                 "FilamentTaxonomies": "net7\\FilamentTaxonomies\\Facades\\FilamentTaxonomies"
