@@ -15,7 +15,7 @@ class ConceptSchema extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'concept_scheme';
+    protected $table = 'concept_schemas';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
