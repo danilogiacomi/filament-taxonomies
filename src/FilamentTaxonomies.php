@@ -4,6 +4,8 @@ namespace Net7\FilamentTaxonomies;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Net7\FilamentTaxonomies\Filament\Resources\ConceptResource;
+use Net7\FilamentTaxonomies\Filament\Resources\ConceptSchemaResource;
 
 class FilamentTaxonomies implements Plugin
 {
@@ -14,7 +16,14 @@ class FilamentTaxonomies implements Plugin
 
     public function register(Panel $panel): void
     {
-        //
+        $panel
+            ->resources([
+                ConceptResource::class,
+                ConceptSchemaResource::class,
+            ])
+            ->pages([
+                // Settings::class,
+            ]);
     }
 
     public function boot(Panel $panel): void

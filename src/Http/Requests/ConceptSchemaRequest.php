@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 namespace Net7\FilamentTaxonomies\Http\Requests;
 
