@@ -58,7 +58,13 @@ class VocabularyJSONLD {
         ];
 
         $this->concept_schema_id = $concept_schema_id;
-        $this->context = Storage::disk('public')->get($context);
+
+
+        $path = public_path('vendor/filament-taxonomies/'.$context);
+        // $this->context = Storage::disk('local')->get('../vendor/filament-taxonomies/'.$context);
+
+        $this->context = file_get_contents(public_path('vendor/filament-taxonomies/'.$context));
+        
         $doc = JsonLD::getDocument($this->context);
         $this->graph = $doc->getGraph();
 
@@ -139,7 +145,7 @@ class VocabularyJSONLD {
             $new_node->addPropertyValue(self::$definition, $conceptSchema->description);
             $new_node->addPropertyValue(self::$prefLabel, $conceptSchema->label);
 
-            $topConcepts = Concept::where('parent_id', null)->where('concept_scheme_id', $conceptSchema->id)->get();
+            $topConcepts = Concept::where('parent_id', null)->where('concept_schema_id', $conceptSchema->id)->get();
             foreach ($topConcepts as $topConcept) {
                 $new_node->addPropertyValue(self::$hasTopConcept, $topConcept->uri);
             }
@@ -154,7 +160,7 @@ class VocabularyJSONLD {
         }
         else
         {
-            $concepts = Concept::where('concept_scheme_id', $this->concept_schema_id)->get();
+            $concepts = Concept::where('concept_schema_id', $this->concept_schema_id)->get();
         }
 
         $this->addClassConcepts($concepts);
@@ -166,7 +172,7 @@ class VocabularyJSONLD {
     {
         foreach ($concepts as $concept) {
             $node = $this->graph->getNode(self::$concept);
-            $conceptSchema = ConceptSchema::where('id', $concept->concept_scheme_id)->value('uri');
+            $conceptSchema = ConceptSchema::where('id', $concept->concept_schema_id)->value('uri');
             $conceptSchema_node = $this->graph->getNode($conceptSchema);
             $new_node = $this->graph->createNode($concept->uri)->setType($node);
             $new_node->addPropertyValue(self::$definition, $concept->definition);

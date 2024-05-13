@@ -30,6 +30,7 @@ class ConceptResource extends JsonResource
 
         $array = [
             "@id" => $this->uri,
+            // "@id" => $this->id,
           "@type" => "Concept",
           "preflabel" => $this->label,
           "definition" => $this->definition
@@ -38,6 +39,7 @@ class ConceptResource extends JsonResource
         if (isset($narrow)) {
             $array['narrow'][] = [
                 "@id" => $narrow->uri,
+                // "@id" => $narrow->id,
                 "@type" => "Concept",
                 "preflabel" => $narrow->label,
             ];
@@ -49,8 +51,9 @@ class ConceptResource extends JsonResource
             foreach ($broaders as $broader) {
 
                 $topConcept[] = [
-                '@id' => $broader->uri,
-                '@type' => "Concept",
+                    '@id' => $broader->uri,
+                    // '@id' => $broader->id,
+                    '@type' => "Concept",
                     "preflabel" => $broader->label
                 ];
 

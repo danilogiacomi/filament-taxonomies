@@ -15,6 +15,17 @@ You can install the package via composer:
 ```bash
 composer require net7/filament-taxonomies
 ```
+Publish the assets:
+
+```bash
+php artisan vendor:publish --tag="filament-taxonomies-assets"
+```
+
+Remember to link the storage
+```bash
+php artisan storage:link
+```
+
 
 You can publish and run the migrations with:
 
@@ -41,6 +52,7 @@ This is the contents of the published config file:
 return [
 ];
 ```
+
 
 ## Usage
 

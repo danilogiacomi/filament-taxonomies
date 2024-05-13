@@ -22,6 +22,8 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
 
     public static string $viewNamespace = 'filament-taxonomies';
 
+
+
     public function configurePackage(Package $package): void
     {
         /*
@@ -31,11 +33,17 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
          */
         $package->name(static::$name)
             ->hasCommands($this->getCommands())
+            ->hasRoute('api')
+            ->hasAssets()
+            ->hasViews()
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
                     ->publishMigrations()
+                    ->publishAssets()
+                    // ->publishViews()
                     ->askToRunMigrations()
+                    // ->askToPublishAssets()
                     ->askToStarRepoOnGitHub('net7/filament-taxonomies');
             });
 
@@ -44,6 +52,10 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
         if (file_exists($package->basePath("/../config/{$configFileName}.php"))) {
             $package->hasConfigFile();
         }
+
+        // if (file_exists($package->basePath('/../assets'))) {
+        //     $package->hasAssets($this->getAssets());
+        // }
 
         if (file_exists($package->basePath('/../database/migrations'))) {
             $package->hasMigrations($this->getMigrations());
@@ -102,11 +114,15 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
     protected function getAssets(): array
     {
         return [
+
+            
+            // Asset::make('filament-taxonomies-jsonld', __DIR__ . '/../assets/jsonld/'),
             // AlpineComponent::make('filament-taxonomies', __DIR__ . '/../resources/dist/components/filament-taxonomies.js'),
             // Css::make('filament-taxonomies-styles', __DIR__ . '/../resources/dist/filament-taxonomies.css'),
             // Js::make('filament-taxonomies-scripts', __DIR__ . '/../resources/dist/filament-taxonomies.js'),
         ];
     }
+
 
     /**
      * @return array<class-string>

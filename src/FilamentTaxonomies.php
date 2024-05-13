@@ -4,6 +4,7 @@ namespace Net7\FilamentTaxonomies;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Net7\FilamentTaxonomies\Filament\Pages\Concept;
 use Net7\FilamentTaxonomies\Filament\Resources\ConceptResource;
 use Net7\FilamentTaxonomies\Filament\Resources\ConceptSchemaResource;
 
@@ -22,7 +23,7 @@ class FilamentTaxonomies implements Plugin
                 ConceptSchemaResource::class,
             ])
             ->pages([
-                // Settings::class,
+                Concept::class,
             ]);
     }
 

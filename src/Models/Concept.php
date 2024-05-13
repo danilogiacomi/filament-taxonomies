@@ -6,11 +6,22 @@ namespace Net7\FilamentTaxonomies\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use SolutionForest\FilamentTree\Concern\ModelTree;
 
 class Concept extends Model
 {
     use HasFactory;
-    use \Net7\FilamentTaxonomies\Traits\TaxonomyTrait;
+    // use \Net7\FilamentTaxonomies\Traits\TaxonomyTrait;
+    use ModelTree;
+
+    
+    // private static $conceptSchema = '';
+
+    // public static function query(){
+    //     $query = parent::query();
+    //     $query->where('concept_schema_id', self::conceptSchema);
+    //     return $query;
+    // }
 
     /*
     |--------------------------------------------------------------------------
@@ -24,7 +35,7 @@ class Concept extends Model
     protected $guarded = ['id'];
     // protected $hidden = [];
     // protected $dates = [];
-    protected $fillable = ['extras', 'label', 'uri', 'exact_match', 'parent_id', 'definition', 'conceptScheme'];
+    protected $fillable = ['extras', 'label', 'uri', 'exact_match', 'parent_id', 'definition', 'conceptSchema', "parent_id", "title", "order"];
     protected $fakeColumns = ['extras'];
     protected $cast = [
         'extras' => 'array'
@@ -40,6 +51,10 @@ class Concept extends Model
     |--------------------------------------------------------------------------
     */
 
+    // public static function canView(){
+    //     $a = '';
+    // }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -50,9 +65,9 @@ class Concept extends Model
         return $this->belongsTo('Net7\FilamentTaxonomies\Models\Concept', 'parent_id');
     }
 
-    public function conceptScheme()
+    public function conceptSchema()
     {
-        return $this->belongsTo('Net7\FilamentTaxonomies\Models\ConceptSchema', 'concept_scheme_id');
+        return $this->belongsTo('Net7\FilamentTaxonomies\Models\ConceptSchema', 'concept_schema_id');
     }
 
     /*
@@ -125,10 +140,10 @@ class Concept extends Model
         $uri = $value['uri'];
 
         $explode_concept = explode('/', $uri);
-        $concept_schema = ConceptSchema::where('id', $value['conceptScheme'])->value('label');
+        $concept_schema = ConceptSchema::where('id', $value['conceptSchema'])->value('label');
 
         $this->attributes['uri'] = env("APP_URL")  . "/" . "taxonomy" . "/" . $concept_schema . "#" . end($explode_concept);
-        $this->attributes['concept_scheme_id'] = $value['conceptScheme'];
+        $this->attributes['concept_schema_id'] = $value['conceptSchema'];
 
     }
 

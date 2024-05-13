@@ -6,6 +6,8 @@ use Net7\FilamentTaxonomies\Filament\Resources\ConceptResource\Pages;
 use Net7\FilamentTaxonomies\Filament\Resources\ConceptResource\RelationManagers;
 use Net7\FilamentTaxonomies\Models\Concept;
 use Filament\Forms;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -19,12 +21,19 @@ class ConceptResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+
+    public static function getFormSchema(){
+        return [
+            TextInput::make('title')->required(),
+            Textarea::make('definition'),
+            TextInput::make('uri')->required()->url(),
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                //
-            ]);
+            ->schema(self::getFormSchema());
     }
 
     public static function table(Table $table): Table

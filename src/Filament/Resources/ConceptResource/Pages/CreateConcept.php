@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateConcept extends CreateRecord
 {
     protected static string $resource = ConceptResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return  $this->getResource()::getUrl('index');
+    }
 }

@@ -95,7 +95,7 @@ class Concepts extends Controller
     public function buildView()
     {
         $schema = ConceptSchema::where('label', 'LIKE', '%'.$this->schema.'%')->get()->first()->toArray();
-        $concepts = Concept::where('concept_scheme_id', $schema['id'])->get();
+        $concepts = Concept::where('concept_schema_id', $schema['id'])->get();
         $data = [];
 
         $schema['label'] = ucfirst($schema['label']);
@@ -141,7 +141,7 @@ class Concepts extends Controller
             ];
         }
 
-        return view('vocabulary/index-en_test', ['individuals' => $data, "schema"=>$schema, "classes" => $classes, 'annotations' => $annotations]);
+        return view('vendor/filament-taxonomies/vocabulary/index-en_test', ['individuals' => $data, "schema"=>$schema, "classes" => $classes, 'annotations' => $annotations]);
     }
 
 

@@ -1,0 +1,12 @@
+{
+  "@context": {
+      "concept": "http://www.w3.org/2004/02/skos/core#Concept",
+      "conceptScheme": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+      "definition": "http://www.w3.org/2004/02/skos/core#definition",
+      "exactMatch": "http://www.w3.org/2004/02/skos/core#exactMatch",
+      "inSchema": "http://www.w3.org/2004/02/skos/core#inSchema",
+      "narrow": "http://www.w3.org/2004/02/skos/core#narrower",
+      "broader": "http://www.w3.org/2004/02/skos/core#broader",
+      "prefLabel": "http://www.w3.org/2004/02/skos/core#prefLabel"
+  }
+}

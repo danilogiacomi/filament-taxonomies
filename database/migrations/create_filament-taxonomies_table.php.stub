@@ -34,16 +34,19 @@ return new class extends Migration
         Schema::create('concepts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string("label");
+            // $table->string("label");
             
             $table->longText('definition')->nullable();
             $table->string('exact_match')->nullable();
-            $table->string("sortable")->nullable();
-            $table->integer("parent_id")->default(0)->nullable();
-            $table->integer("lft")->default(0)->nullable();
-            $table->integer("rgt")->default(0)->nullable();
-            $table->integer("depth")->default(0)->nullable();            
-            $table->string('concept_scheme_id')->nullable();
+            // $table->string("sortable")->nullable();
+            // $table->integer("parent_id")->default(0)->nullable();
+            // $table->integer("lft")->default(0)->nullable();
+            // $table->integer("rgt")->default(0)->nullable();
+            // $table->integer("depth")->default(0)->nullable();            
+
+            $table->treeColumns();
+
+            $table->string('concept_schema_id')->nullable();
             $table->string('uri');
 
         });
@@ -67,6 +70,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('concepts');
         // Schema::dropIfExists('ontology_predicates');
-        Schema::dropIfExists('concept_scheme');
+        Schema::dropIfExists('concept_schemas');
     }
 };
