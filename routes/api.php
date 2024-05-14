@@ -83,7 +83,7 @@ Route::get('/concept/{id}', function ($id) {
 
 
 
-Route::get('/taxonomy/{schema}', Net7\FilamentTaxonomies\Http\Controllers\Concepts::class);
+Route::get('/taxonomy/{schema}', Net7\FilamentTaxonomies\Http\Controllers\Concepts::class)->name('filament-taxonomies-taxonomy');
 
 /*
 |--------------------------------------------------------------------------

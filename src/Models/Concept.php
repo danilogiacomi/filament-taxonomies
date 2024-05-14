@@ -7,13 +7,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use SolutionForest\FilamentTree\Concern\ModelTree;
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 
-class Concept extends Model
+class Concept extends Model implements Sortable
 {
     use HasFactory;
     // use \Net7\FilamentTaxonomies\Traits\TaxonomyTrait;
-    use ModelTree;
+    // use ModelTree;
+    
+    use SortableTrait;
 
+
+    public $sortable = [
+        'order_column_name' => 'order_column',
+        'sort_when_creating' => true,
+    ];
     
     // private static $conceptSchema = '';
 

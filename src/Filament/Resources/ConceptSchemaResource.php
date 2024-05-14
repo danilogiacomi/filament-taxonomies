@@ -6,6 +6,7 @@ use Net7\FilamentTaxonomies\Filament\Resources\ConceptSchemaResource\Pages;
 use Net7\FilamentTaxonomies\Filament\Resources\ConceptSchemaResource\RelationManagers;
 use Net7\FilamentTaxonomies\Models\ConceptSchema;
 use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Net7\FilamentTaxonomies\Enums\ConceptSchemaStates;
 use Net7\FilamentTaxonomies\Enums\ConceptSchemaTypes;
+use Net7\FilamentTaxonomies\Filament\Resources\ConceptSchemaResource\RelationManagers\ConceptsRelationManager;
 
 class ConceptSchemaResource extends Resource
 {
@@ -30,19 +32,21 @@ class ConceptSchemaResource extends Resource
         return $form
             ->schema([
                 TextInput::make('label')->required(),
-                TextInput::make('title'),
-                Textarea::make('description'),
-                Select::make('state')
-                    ->options(ConceptSchemaStates::options())
-                    ->required(),
-                Select::make('type')
-                    ->options(ConceptSchemaTypes::options())
-                    ->required(),
-                TextInput::make('owner'),
-                TextInput::make('uri')->required()->url(),
-                TextInput::make('creator'),
-                TextInput::make('license'),
-
+                // TextInput::make('title'),
+                Fieldset::make('data')->schema([
+                    Textarea::make('description')->columnSpanFull(),
+                    Select::make('state')
+                        ->options(ConceptSchemaStates::options())
+                        ->required(),
+                    Select::make('type')
+                        ->options(ConceptSchemaTypes::options())
+                        ->required(),
+                    TextInput::make('owner'),
+                    TextInput::make('uri')->required()->url(),
+                    TextInput::make('creator'),
+                    TextInput::make('license'),
+                ])
+                // ->collapsible()
                 
 
             ]);
@@ -61,6 +65,12 @@ class ConceptSchemaResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('jsonLd')
+                    ->label('jsonLD')
+                    ->url(function ($record){
+                        return route('filament-taxonomies-taxonomy', ['schema' => $record->label]);
+                    })
+                    ->openUrlInNewTab()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -72,7 +82,7 @@ class ConceptSchemaResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ConceptsRelationManager::class,
         ];
     }
 

@@ -24,7 +24,8 @@
         "filament/filament": "^3.0",
         "ml/json-ld": "^1.2",
         "solution-forest/filament-tree": "^2.0",
-        "spatie/laravel-package-tools": "^1.15.0"
+        "spatie/laravel-package-tools": "^1.15.0",
+        "spatie/eloquent-sortable": "^4.3"
     },
     "require-dev": {
         "nunomaduro/collision": "^7.9",

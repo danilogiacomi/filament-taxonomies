@@ -11,6 +11,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -24,7 +25,7 @@ class ConceptResource extends Resource
 
     public static function getFormSchema(){
         return [
-            TextInput::make('title')->required(),
+            TextInput::make('label')->required(),
             Textarea::make('definition'),
             TextInput::make('uri')->required()->url(),
         ];
@@ -40,7 +41,8 @@ class ConceptResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('label'),
+                TextColumn::make('uri'),
             ])
             ->filters([
                 //

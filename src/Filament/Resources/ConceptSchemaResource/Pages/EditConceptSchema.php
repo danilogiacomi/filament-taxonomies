@@ -26,7 +26,7 @@ class EditConceptSchema extends EditRecord
     protected function getFooterWidgets(): array
     {
         return [
-            ConceptWidget::class
+            // ConceptWidget::class
         ];
     }
 }

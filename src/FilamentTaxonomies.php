@@ -19,11 +19,11 @@ class FilamentTaxonomies implements Plugin
     {
         $panel
             ->resources([
-                ConceptResource::class,
+                // ConceptResource::class,
                 ConceptSchemaResource::class,
             ])
             ->pages([
-                Concept::class,
+                // Concept::class,
             ]);
     }
 
