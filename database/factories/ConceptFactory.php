@@ -19,10 +19,10 @@ class ConceptFactory extends Factory
     public function definition(): array
     {
         return [
-            'label' => $this->faker->unique()->name(),
+            'label' => $this->faker->unique()->slug(),
             'definition' => $this->faker->paragraph(),
             // 'exact_match' => $this->faker->word(),
-            'order_column' => $this->faker->unique()->randomDigit(),
+            'order_column' => $this->faker->unique()->randomNumber(),
             'concept_schema_id' => $this->faker->randomDigitNotNull(),
             'uri' => $this->faker->url()
 
