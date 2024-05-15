@@ -7,6 +7,7 @@ use Net7\FilamentTaxonomies\Filament\Resources\ConceptSchemaResource\RelationMan
 use Net7\FilamentTaxonomies\Models\ConceptSchema;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -33,7 +34,11 @@ class ConceptSchemaResource extends Resource
             ->schema([
                 TextInput::make('label')->required(),
                 // TextInput::make('title'),
-                Fieldset::make('data')->schema([
+                Section::make('Data')
+                ->schema([
+                    Fieldset::make('data')
+                ->label('')
+                ->schema([
                     Textarea::make('description')->columnSpanFull(),
                     Select::make('state')
                         ->options(ConceptSchemaStates::options())
@@ -45,9 +50,11 @@ class ConceptSchemaResource extends Resource
                     TextInput::make('uri')->required()->url(),
                     TextInput::make('creator'),
                     TextInput::make('license'),
-                ])
-                // ->collapsible()
-                
+                ])])
+                ->collapsible()
+                ->collapsed(function (string $operation) {
+                    if ($operation == 'edit') return true;
+                })
 
             ]);
     }

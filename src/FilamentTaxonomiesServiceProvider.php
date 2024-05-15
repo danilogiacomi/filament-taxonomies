@@ -36,6 +36,7 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
             ->hasRoute('api')
             ->hasAssets()
             ->hasViews()
+            // ->registerDependencyPublishable()
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
