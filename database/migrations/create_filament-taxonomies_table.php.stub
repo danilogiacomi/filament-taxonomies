@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string("label");
-            $table->string("description")->nullable();
+            $table->longText("description")->nullable();
 
             $table->enum('state', ConceptSchemaStates::names()); 
             $table->enum('type', ConceptSchemaTypes::names()); 
