@@ -71,12 +71,15 @@ class ConceptSchemaResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('jsonLd')
-                    ->label('jsonLD')
+                Tables\Actions\EditAction::make()->button(),
+                Tables\Actions\Action::make('JsonLd')
+                    ->label('JsonLD')
                     ->url(function ($record){
                         return route('filament-taxonomies-taxonomy', ['schema' => $record->label]);
                     })
+                    ->icon('heroicon-m-link')
+
+                    ->button()
                     ->openUrlInNewTab()
             ])
             ->bulkActions([
