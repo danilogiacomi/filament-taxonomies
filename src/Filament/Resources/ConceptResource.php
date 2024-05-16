@@ -25,9 +25,10 @@ class ConceptResource extends Resource
 
     public static function getFormSchema(){
         return [
-            TextInput::make('label')->required(),
-            Textarea::make('definition'),
-            TextInput::make('uri')->required()->url(),
+
+            TextInput::make('label')->required()->columnSpanFull(),
+            Textarea::make('definition')->columnSpanFull(),
+            TextInput::make('uri')->required()->url()->columnSpanFull(),
         ];
     }
 

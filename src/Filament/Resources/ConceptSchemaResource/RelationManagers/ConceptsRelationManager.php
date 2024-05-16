@@ -2,15 +2,15 @@
 
 namespace Net7\FilamentTaxonomies\Filament\Resources\ConceptSchemaResource\RelationManagers;
 
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Net7\FilamentTaxonomies\Filament\Resources\ConceptResource;
+use Net7\FilamentTaxonomies\Models\Concept;
 
 class ConceptsRelationManager extends RelationManager
 {
@@ -29,10 +29,29 @@ class ConceptsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('label')
             ->columns([
-                TextColumn::make('label'),
-                TextColumn::make('uri'),
-            ])
-            ->filters([
+                
+                // one alternative
+                // Stack::make(
+                //     [
+                //     TextColumn::make('label'),
+                //     TextColumn::make('uri'),
+                // ])
+
+                // another alternative
+                // Split::make(
+                // [
+                //     TextColumn::make('label'),
+                //     TextColumn::make('uri'),
+                // ])
+                // ->from('md')
+
+                // maybe the best one, TODO: TBD
+                TextColumn::make('label')
+                ->description(fn (Concept $record): string => $record->uri)
+
+
+                ])
+                ->filters([
                 //
             ])
             ->headerActions([
@@ -40,6 +59,7 @@ class ConceptsRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
