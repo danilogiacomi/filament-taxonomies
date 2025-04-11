@@ -69,9 +69,12 @@ class VocabularyJSONLD {
         $this->graph = $doc->getGraph();
 
         $this->addMainClasses();
-//        $this->addConceptScheme();
+        //  $this->addConceptScheme();
         $this->addConcepts();
-        $this->addOntologyInfo();
+
+        if (Concept::count() > 0) {
+            $this->addOntologyInfo();
+        }
 
     }
 

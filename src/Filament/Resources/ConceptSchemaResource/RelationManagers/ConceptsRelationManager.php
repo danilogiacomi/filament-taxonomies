@@ -2,6 +2,8 @@
 
 namespace Net7\FilamentTaxonomies\Filament\Resources\ConceptSchemaResource\RelationManagers;
 
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -18,40 +20,15 @@ class ConceptsRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        return $form
-            ->schema(
-                ConceptResource::getFormSchema()
-            );
+        return $form->schema(ConceptResource::getFormSchema());
     }
 
     public function table(Table $table): Table
     {
         return $table
             ->recordTitleAttribute('label')
-            ->columns([
-                
-                // one alternative
-                // Stack::make(
-                //     [
-                //     TextColumn::make('label'),
-                //     TextColumn::make('uri'),
-                // ])
-
-                // another alternative
-                // Split::make(
-                // [
-                //     TextColumn::make('label'),
-                //     TextColumn::make('uri'),
-                // ])
-                // ->from('md')
-
-                // maybe the best one, TODO: TBD
-                TextColumn::make('label')
-                ->description(fn (Concept $record): string => $record->uri)
-
-
-                ])
-                ->filters([
+            ->columns(ConceptResource::getTableColumns())
+            ->filters([
                 //
             ])
             ->headerActions([
@@ -59,17 +36,12 @@ class ConceptsRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->reorderable('order_column')
-            ->defaultSort('order_column');
-    
-            ;
+            ]);
     }
 }

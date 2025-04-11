@@ -2,25 +2,23 @@
 <html lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="/css/primer.css" media="screen"/>
-    <link rel="stylesheet" href="/css/rec.css" media="screen"/>
-    <link rel="stylesheet" href="/css/extra.css" media="screen"/>
-    <link rel="stylesheet" href="/css/owl.css" media="screen"/>
+    <link rel="stylesheet" href="/vendor/filament-taxonomies/css/primer.css" media="screen"/>
+    <link rel="stylesheet" href="/vendor/filament-taxonomies/css/rec.css" media="screen"/>
+    <link rel="stylesheet" href="/vendor/filament-taxonomies/css/extra.css" media="screen"/>
+    <link rel="stylesheet" href="/vendor/filament-taxonomies/css/owl.css" media="screen"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <title>Taxonomy</title>
-
-
 </head>
 
 <body>
 <div class="container">
-    @include('vocabulary.head')
+    @include('filament-taxonomies::vocabulary.head')
     <!--INTRODUCTION SECTION-->
-    @include('vocabulary.introduction')
+    @include('filament-taxonomies::vocabulary.introduction')
     <!--OVERVIEW SECTION-->
-    @include('vocabulary.overview')
+    @include('filament-taxonomies::vocabulary.overview')
     <!--DESCRIPTION SECTION-->
-    @include('vocabulary.description')
+    @include('filament-taxonomies::vocabulary.description')
 
     <!--CROSSREF SECTION-->
     <div id="crossref"><h2 id="crossreference" class="list">
@@ -28,19 +26,19 @@
                         href="#toc">ToC</a></span></h2>
         This section provides details for each class and property defined by triplo.
         @if(isset($classes))
-            @include('vocabulary.class')
+            @include('filament-taxonomies::vocabulary.class')
         @endif
 
         @if(isset($objectProperties))
-            @include('vocabulary.objectProperties')
+            @include('filament-taxonomies::vocabulary.objectProperties')
         @endif
 
         @if(isset($individuals))
-            @include('vocabulary.individuals')
+            @include('filament-taxonomies::vocabulary.individuals')
         @endif
 
         @if(isset($annotations))
-            @include('vocabulary.annotations')
+            @include('filament-taxonomies::vocabulary.annotations')
         @endif
 
     </div>

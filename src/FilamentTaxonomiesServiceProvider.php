@@ -13,7 +13,6 @@ use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Net7\FilamentTaxonomies\Commands\FilamentTaxonomiesCommand;
 use Net7\FilamentTaxonomies\Testing\TestsFilamentTaxonomies;
 
 class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
@@ -131,7 +130,7 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
     protected function getCommands(): array
     {
         return [
-            FilamentTaxonomiesCommand::class,
+            //
         ];
     }
 

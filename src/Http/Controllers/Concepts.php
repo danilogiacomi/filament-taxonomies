@@ -141,7 +141,7 @@ class Concepts extends Controller
             ];
         }
 
-        return view('vendor/filament-taxonomies/vocabulary/index-en_test', ['individuals' => $data, "schema"=>$schema, "classes" => $classes, 'annotations' => $annotations]);
+        return view('filament-taxonomies::vocabulary.index-en_test', ['individuals' => $data, "schema"=>$schema, "classes" => $classes, 'annotations' => $annotations]);
     }
 
 

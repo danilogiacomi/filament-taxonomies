@@ -76,12 +76,9 @@ Route::get('/concepts', function () {
     return ConceptResource::collection(Concept::all());
 });
 
-Route::get('/concept/{id}', function ($id) {
-    return new ConceptResource(Concept::findOrFail($id));
+Route::get('/concept/{uri}', function ($uri) {
+    return new ConceptResource(Concept::where('uri', $uri)->firstOrFail());
 });
-
-
-
 
 Route::get('/taxonomy/{schema}', Net7\FilamentTaxonomies\Http\Controllers\Concepts::class)->name('filament-taxonomies-taxonomy');
 

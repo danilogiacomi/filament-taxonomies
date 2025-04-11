@@ -29,7 +29,7 @@
     <ul xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" class="hlist">
     @foreach ($individuals as $individual)
             <li>
-                <a href="#{{$individual['label']}}"
+                <a href="#{{$individual['uri']}}"
                    title="{{$individual['label']}}">
                     <span>{{$individual['label']}}</span>
                 </a>

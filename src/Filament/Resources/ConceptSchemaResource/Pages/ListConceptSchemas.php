@@ -10,13 +10,10 @@ class ListConceptSchemas extends ListRecords
 {
     protected static string $resource = ConceptSchemaResource::class;
 
-
     protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),
         ];
     }
-
-  
 }

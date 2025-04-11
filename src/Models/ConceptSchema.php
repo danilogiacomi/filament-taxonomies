@@ -62,11 +62,4 @@ class ConceptSchema extends Model
         $this->attributes['label'] = $value;
 
     }
-
-    public function setUriAttribute($value)
-    {
-        $value = strtolower($value);
-        $explode_value = explode('/', $value);
-        $this->attributes['uri'] = env("APP_URL")  . "/" . "taxonomy" . "/" . end($explode_value);
-    }
 }

@@ -26,15 +26,15 @@
               <a href="http://www.w3.org/2004/02/skos/core#{{$type}}" target="_blank" title="http://www.w3.org/2004/02/skos/core#{{$type}}">{{$type}}</a>
               <sup class="type-c" title="class">c</sup>
           </dd>
-          @if(isset($exact_match) | isset($narrow_uri))
+          @if(isset($exact_match) | isset($close_match))
           <dt>has facts</dt>
-          @if(isset($narrow_uri))
+          @if(isset($close_match))
           <dd>
-              <a href="http://www.w3.org/2004/02/skos/core#narrower"
+              <a href="http://www.w3.org/2004/02/skos/core#closeMatch"
                  target="_blank"
-                 title="http://www.w3.org/2004/02/skos/core#narrower">narrower</a>
+                 title="http://www.w3.org/2004/02/skos/core#closeMatch">close match</a>
               <sup class="type-op" title="object property">op</sup>
-              <span class="literal"><a href={{$narrow_uri}} target="_blank">{{ $narrow_label}}</a></span>
+              <span class="literal"><a href={{$close_match}} target="_blank">{{ $close_match }}</a></span>
           </dd>
           @endif
           @if(isset($exact_match))

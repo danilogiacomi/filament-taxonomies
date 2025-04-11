@@ -2,16 +2,48 @@
 
 namespace Net7\FilamentTaxonomies\Enums;
 
-use Net7\FilamentTaxonomies\Traits\EnumHelper;
+use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Contracts\HasDescription;
+use BackedEnum;
 
-enum ConceptSchemaStates: string
+enum ConceptSchemaStates: string implements HasLabel, HasDescription
 {
-    use EnumHelper;
+    case DRAFT = 'DRAFT';
+    case WORK_IN_PROGRESS = 'WORK_IN_PROGRESS';
+    case PUBLISHED = 'PUBLISHED';
 
-    case working = 'working';
-    case published = 'published';
-    case deleted = 'deleted';
+    public function getLabel(): string|null
+    {
+        return match ($this) {
+            self::DRAFT => 'Draft',
+            self::WORK_IN_PROGRESS => 'Work in Progress',
+            self::PUBLISHED => 'Published',
+            default => null,
+        };
+    }
 
+    public function getDescription(): string|null
+    {
+        return match ($this) {  
+            self::DRAFT => 'The controlled vocabulary is in draft status.',
+            self::WORK_IN_PROGRESS => 'The controlled vocabulary is in work in progress status.',
+            self::PUBLISHED => 'The controlled vocabulary is published.',
+            default => null,
+        };
+    }
+
+    public function getColor(): string
+    {
+        return match ($this) {
+            self::DRAFT => 'gray',
+            self::WORK_IN_PROGRESS => 'warning',
+            self::PUBLISHED => 'success',
+            default => 'gray',
+        };
+    }
+
+    public static function getValues(): array
+    {
+        return array_map(fn (BackedEnum $enum) => $enum->value, self::cases());
+    }
 }
-
-// see https://emekambah.medium.com/php-enum-and-use-cases-in-laravel-ac015cf181ad

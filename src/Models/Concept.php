@@ -44,9 +44,9 @@ class Concept extends Model implements Sortable
     protected $guarded = ['id'];
     // protected $hidden = [];
     // protected $dates = [];
-    protected $fillable = ['extras', 'label', 'uri', 'exact_match', 'parent_id', 'definition', 'conceptSchema', "parent_id", "title", "order"];
+    protected $fillable = ['extras', 'label', 'uri', 'exact_match', 'close_match', 'parent_id', 'definition', 'concept_schema_id', "parent_id", "title", "order_column"];
     protected $fakeColumns = ['extras'];
-    protected $cast = [
+    protected $casts = [
         'extras' => 'array'
     ];
 
@@ -153,8 +153,5 @@ class Concept extends Model implements Sortable
 
         $this->attributes['uri'] = env("APP_URL")  . "/" . "taxonomy" . "/" . $concept_schema . "#" . end($explode_concept);
         $this->attributes['concept_schema_id'] = $value['conceptSchema'];
-
     }
-
-
 }

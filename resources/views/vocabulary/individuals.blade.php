@@ -2,8 +2,8 @@
     <h3 id="namedindividuals" class="list">Named Individuals</h3>
     <ul class="hlist">
         @foreach ($individuals as $individual)
-            <li>
-                <a href="#{{$individual['label']}}"
+            <li id="{{$individual['uri']}}">
+                <a href="#{{$individual['uri']}}"
                    title="{{$individual['label']}}">
                     <span>{{$individual['label']}}</span>
                 </a>
@@ -27,16 +27,14 @@
                 <sup class="type-c" title="class">c</sup>
             </dd>
             <dt>has facts</dt>
-            @if(isset($individual['narrowers']))
-                @foreach ($individual['narrowers'] as $narrower)
+            @if(isset($individual['close_match']))
                 <dd>
-                    <a href="http://www.w3.org/2004/02/skos/core#narrower"
+                    <a href="http://www.w3.org/2004/02/skos/core#closeMatch"
                        target="_blank"
-                       title="http://www.w3.org/2004/02/skos/core#narrower">narrower</a>
+                       title="http://www.w3.org/2004/02/skos/core#closeMatch">close match</a>
                     <sup class="type-op" title="object property">op</sup>
-                    <span class="literal"><a href={{$narrower->uri}} target="_blank">{{$narrower->label}}</a></span>
+                    <span class="literal"><a href={{$individual['close_match']}} target="_blank">{{$individual['close_match']}}</a></span>
                 </dd>
-                @endforeach
             @endif
             @if(isset($individual['exact_match']))
                 <dd>
