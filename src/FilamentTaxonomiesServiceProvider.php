@@ -14,7 +14,6 @@ use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Net7\FilamentTaxonomies\Commands\FilamentTaxonomiesCommand;
-use Net7\FilamentTaxonomies\Testing\TestsFilamentTaxonomies;
 
 class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
 {
@@ -53,10 +52,6 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
         if (file_exists($package->basePath("/../config/{$configFileName}.php"))) {
             $package->hasConfigFile();
         }
-
-        // if (file_exists($package->basePath('/../assets'))) {
-        //     $package->hasAssets($this->getAssets());
-        // }
 
         if (file_exists($package->basePath('/../database/migrations'))) {
             $package->hasMigrations($this->getMigrations());
@@ -100,8 +95,6 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
             }
         }
 
-        // Testing
-        Testable::mixin(new TestsFilamentTaxonomies());
     }
 
     protected function getAssetPackageName(): ?string
@@ -115,12 +108,6 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
     protected function getAssets(): array
     {
         return [
-
-            
-            // Asset::make('filament-taxonomies-jsonld', __DIR__ . '/../assets/jsonld/'),
-            // AlpineComponent::make('filament-taxonomies', __DIR__ . '/../resources/dist/components/filament-taxonomies.js'),
-            // Css::make('filament-taxonomies-styles', __DIR__ . '/../resources/dist/filament-taxonomies.css'),
-            // Js::make('filament-taxonomies-scripts', __DIR__ . '/../resources/dist/filament-taxonomies.js'),
         ];
     }
 
