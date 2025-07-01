@@ -39,6 +39,17 @@ return new class extends Migration
             $table->timestamps();
             $table->unique(['taxonomy_id', 'term_id']);
         });
+
+        Schema::create('entity_terms', function (Blueprint $table) {
+            $table->id();
+            $table->string('entity_type');
+            $table->unsignedBigInteger('entity_id');
+            $table->string('taxonomy_type');
+            $table->foreignId('term_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
+            $table->index(['entity_type', 'entity_id']);
+            $table->unique(['entity_type', 'entity_id', 'taxonomy_type', 'term_id'], 'entity_taxonomy_term_unique');
+        });
     }
 
     /**
@@ -50,5 +61,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('taxonomies');
         Schema::dropIfExists('terms');
+        Schema::dropIfExists('taxonomy_term');
+        Schema::dropIfExists('entity_terms');
     }
 };
