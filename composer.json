@@ -40,7 +40,8 @@
     "autoload": {
         "psr-4": {
             "Net7\\FilamentTaxonomies\\": "src/",
-            "Net7\\FilamentTaxonomies\\Database\\Factories\\": "database/factories/"
+            "Net7\\FilamentTaxonomies\\Database\\Factories\\": "database/factories/",
+            "Net7\\FilamentTaxonomies\\Database\\Seeders\\": "database/seeders/"
         }
     },
     "autoload-dev": {

@@ -10,7 +10,30 @@ enum TaxonomyStates: string
 
     case working = 'working';
     case published = 'published';
-    case deleted = 'deleted';
+
+    public function getLabel(): string
+    {
+        return match($this) {
+            self::working => 'Working',
+            self::published => 'Published',
+        };
+    }
+
+    public function getIcon(): string
+    {
+        return match($this) {
+            self::working => 'heroicon-o-wrench-screwdriver',
+            self::published => 'heroicon-o-check-circle',
+        };
+    }
+
+    public function getColor(): string
+    {
+        return match($this) {
+            self::working => 'warning',
+            self::published => 'success',
+        };
+    }
 
 }
 

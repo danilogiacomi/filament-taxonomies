@@ -95,6 +95,13 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
             }
         }
 
+        // Publish seeders
+        if (app()->runningInConsole()) {
+            $this->publishes([
+                __DIR__ . '/../database/seeders' => database_path('seeders'),
+            ], 'filament-taxonomies-seeders');
+        }
+
     }
 
     protected function getAssetPackageName(): ?string
@@ -152,7 +159,7 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-            'create_filament-taxonomies_table',
+            'create_filament-taxonomies_table'
         ];
     }
 }

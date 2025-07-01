@@ -3,7 +3,9 @@
 namespace Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource\Pages;
 
 use Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource;
+use Net7\FilamentTaxonomies\Models\Taxonomy;
 use Filament\Actions;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\EditRecord;
 
 
@@ -19,6 +21,23 @@ class EditTaxonomy extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('semantic_data')
+                ->label('Manage Semantic Metadata')
+                ->icon('heroicon-o-code-bracket')
+                ->color('info')
+                ->form([
+                    TextInput::make('uri')
+                        ->label('URI')
+                        ->disabled()
+                        ->dehydrated(false)
+                        ->helperText('Auto-generated from taxonomy name')
+                ])
+                ->fillForm(fn (): array => [
+                    'uri' => $this->record->uri,
+                ])
+                ->action(function (array $data): void {
+                    // URI is auto-generated, no manual update needed
+                }),
             Actions\DeleteAction::make(),
         ];
     }

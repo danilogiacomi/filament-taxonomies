@@ -2,6 +2,9 @@
 
 namespace Net7\FilamentTaxonomies\Filament\Resources;
 
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Split;
+use Filament\Tables\Actions\ActionGroup;
 use Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource\Pages;
 use Net7\FilamentTaxonomies\Models\Taxonomy;
 use Filament\Forms\Components\Fieldset;
@@ -20,21 +23,26 @@ use Net7\FilamentTaxonomies\Enums\TaxonomyTypes;
 class TaxonomyResource extends Resource
 {
     protected static ?string $model = Taxonomy::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')->required(),
-                Textarea::make('description')->columnSpanFull(),
-                Select::make('state')
-                    ->options(TaxonomyStates::options())
-                    ->required(),
-                Select::make('type')
-                    ->options(TaxonomyTypes::options())
-                    ->required(),
+                Section::make([
+                    TextInput::make('name')
+                        ->required()
+                        ->unique(Taxonomy::class, 'name', ignoreRecord: true),
+                    Textarea::make('description')
+                ]),
+                Section::make([
+                    Select::make('state')
+                        ->options(TaxonomyStates::options())
+                        ->required(),
+                    Select::make('type')
+                        ->options(TaxonomyTypes::options())
+                        ->required()
+                ])->columns(2),
             ]);
     }
 
@@ -44,15 +52,26 @@ class TaxonomyResource extends Resource
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('description')->limit(50),
-                TextColumn::make('state'),
-                TextColumn::make('type'),
+                TextColumn::make('state')
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => $state instanceof TaxonomyStates ? $state->getLabel() : $state)
+                    ->icon(fn ($state) => $state instanceof TaxonomyStates ? $state->getIcon() : null)
+                    ->color(fn ($state) => $state instanceof TaxonomyStates ? $state->getColor() : 'gray'),
+                TextColumn::make('type')
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => $state instanceof TaxonomyTypes ? $state->getLabel() : $state)
+                    ->icon(fn ($state) => $state instanceof TaxonomyTypes ? $state->getIcon() : null)
+                    ->color(fn ($state) => $state instanceof TaxonomyTypes ? $state->getColor() : 'gray'),
                 TextColumn::make('terms_count')->counts('terms'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->button(),
+                ActionGroup::make([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
