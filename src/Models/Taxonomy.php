@@ -70,7 +70,7 @@ class Taxonomy extends Model
         $baseUrl = rtrim(env('APP_URL', 'http://localhost'), '/');
         $taxonomySlug = Str::slug($this->name);
 
-        return "{$baseUrl}/taxonomies/{$taxonomySlug}";
+        return "{$baseUrl}/{$taxonomySlug}";
     }
     /*
     |--------------------------------------------------------------------------

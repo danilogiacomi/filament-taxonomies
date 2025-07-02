@@ -14,20 +14,20 @@ return new class extends Migration
         Schema::create('taxonomies', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('name')->unique();
+            $table->string('name', 500)->unique();
             $table->longText('description')->nullable();
             $table->enum('state', TaxonomyStates::names());
             $table->enum('type', TaxonomyTypes::names());
-            $table->string('uri')->nullable();
+            $table->string('uri', 500)->nullable();
         });
 
         Schema::create('terms', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('name');
+            $table->string('name', 500);
             $table->longText('description')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('terms')->onDelete('set null');
-            $table->string('uri');
+            $table->string('uri', 500);
             $table->string('exact_match_uri')->nullable();
             $table->enum('uri_type', UriTypes::names())->default(UriTypes::internal->value);
         });
@@ -44,7 +44,7 @@ return new class extends Migration
             $table->id();
             $table->string('entity_type');
             $table->unsignedBigInteger('entity_id');
-            $table->string('taxonomy_type');
+            $table->string('taxonomy_type', 500);
             $table->foreignId('term_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             $table->index(['entity_type', 'entity_id']);

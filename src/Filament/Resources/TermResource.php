@@ -28,7 +28,29 @@ class TermResource extends Resource
 
     public static function getFormSchema(){
         return [
-            TextInput::make('name')->required()->unique(Term::class, 'name', ignoreRecord: true)->columnSpanFull(),
+            TextInput::make('name')
+                ->required()
+                ->columnSpanFull()
+                ->rules([
+                    function (Forms\Get $get) {
+                        return function (string $attribute, $value, \Closure $fail) use ($get) {
+                            $termId = $get('id');
+                            $existingTerm = Term::where('name', $value)
+                                ->when($termId, fn($query) => $query->where('id', '!=', $termId))
+                                ->whereHas('taxonomies', function ($query) use ($get) {
+                                    $taxonomyIds = collect($get('taxonomies') ?? [])->pluck('id')->filter();
+                                    if ($taxonomyIds->isNotEmpty()) {
+                                        $query->whereIn('taxonomies.id', $taxonomyIds);
+                                    }
+                                })
+                                ->first();
+
+                            if ($existingTerm) {
+                                $fail('The name has already been taken within the selected taxonomy.');
+                            }
+                        };
+                    },
+                ]),
             Textarea::make('description')->columnSpanFull(),
             Select::make('parent_id')
                 ->label('Parent Term')
@@ -56,8 +78,7 @@ class TermResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(self::getFormSchema());
+        return $form->schema(self::getFormSchema());
     }
 
     public static function table(Table $table): Table

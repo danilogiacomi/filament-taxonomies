@@ -23,7 +23,24 @@ class TermsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255)
-                    ->unique(Term::class, 'name', ignoreRecord: true),
+                    ->rules([
+                        function (Forms\Get $get) {
+                            return function (string $attribute, $value, \Closure $fail) use ($get) {
+                                $termId = $get('id');
+                                $existingTerm = Term::where('name', $value)
+                                    ->when($termId, fn($query) => $query->where('id', '!=', $termId))
+                                    ->whereHas('taxonomies', function ($query) use ($get) {
+                                        $taxonomyIds = collect($get('taxonomies') ?? [])->pluck('id')->filter();
+                                        if ($taxonomyIds->isNotEmpty()) {
+                                            $query->whereIn('taxonomies.id', $taxonomyIds);
+                                        }
+                                    })->first();
+                                if ($existingTerm) {
+                                    $fail('The name has already been taken inside the current taxonomy.');
+                                }
+                            };
+                        },
+                    ]),
                 Forms\Components\Select::make('parent_id')
                     ->label('Parent Term')
                     ->options(function (Forms\Get $get) {
@@ -67,7 +84,13 @@ class TermsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->after(function (Term $record) {
+                        // Regenerate URI after taxonomy relationship is established
+                        if ($record->uri_type === UriTypes::internal) {
+                            $record->update(['uri' => $record->generateInternalUri()]);
+                        }
+                    }),
                 Tables\Actions\AttachAction::make()->preloadRecordSelect(),
             ])
             ->actions([

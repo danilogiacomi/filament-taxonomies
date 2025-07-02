@@ -29,10 +29,6 @@ class Term extends Model
     |--------------------------------------------------------------------------
     */
 
-    // public static function canView(){
-    //     $a = '';
-    // }
-
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -79,10 +75,32 @@ class Term extends Model
         });
     }
 
+    public function validateUniqueNameInTaxonomies(): bool
+    {
+        foreach ($this->taxonomies as $taxonomy) {
+            $existingTerm = $taxonomy->terms()
+                ->where('name', $this->name)
+                ->where('id', '!=', $this->id)
+                ->first();
+
+            if ($existingTerm) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function generateInternalUri(): string
     {
         $baseUrl = rtrim(env('APP_URL', 'http://localhost'), '/');
         $termSlug = Str::slug($this->name);
+
+        $taxonomy = $this->taxonomies()->first();
+        if ($taxonomy) {
+            $taxonomySlug = Str::slug($taxonomy->name);
+            return "{$baseUrl}/{$taxonomySlug}/{$termSlug}";
+        }
 
         return "{$baseUrl}/terms/{$termSlug}";
     }
