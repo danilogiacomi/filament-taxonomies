@@ -23,7 +23,7 @@ class Term extends Model
 
     protected $table = 'terms';
     protected $guarded = ['id'];
-    protected $fillable = ['name', 'description', 'parent_id', 'uri', 'uri_type', 'exact_match_uri'];
+    protected $fillable = ['name', 'slug', 'description', 'parent_id', 'uri', 'uri_type', 'exact_match_uri'];
 
     /*
     |--------------------------------------------------------------------------
@@ -92,6 +92,9 @@ class Term extends Model
     protected static function booted()
     {
         static::creating(function (Term $term) {
+            if (empty($term->slug)) {
+                $term->slug = Str::slug($term->name);
+            }
             if ($term->uri_type === UriTypes::internal || empty($term->uri)) {
                 $term->uri_type = UriTypes::internal;
                 $term->uri = $term->generateInternalUri();
@@ -99,6 +102,9 @@ class Term extends Model
         });
 
         static::updating(function (Term $term) {
+            if ($term->isDirty('name') && empty($term->slug)) {
+                $term->slug = Str::slug($term->name);
+            }
             if ($term->isDirty('name') && $term->uri_type === UriTypes::internal) {
                 $term->uri = $term->generateInternalUri();
             }

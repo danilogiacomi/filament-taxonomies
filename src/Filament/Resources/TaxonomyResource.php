@@ -10,6 +10,9 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -29,7 +32,17 @@ class TaxonomyResource extends Resource
                 Section::make([
                     TextInput::make('name')
                         ->required()
-                        ->unique(Taxonomy::class, 'name', ignoreRecord: true),
+                        ->unique(Taxonomy::class, 'name', ignoreRecord: true)
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(function (Get $get, Set $set, ?string $state) {
+                            if ($state) {
+                                $set('slug', Str::slug($state));
+                            }
+                        }),
+                    TextInput::make('slug')
+                        ->disabled()
+                        ->dehydrated()
+                        ->helperText('Auto-generated from name'),
                     Textarea::make('description')
                 ]),
                 Section::make([

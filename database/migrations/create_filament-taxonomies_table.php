@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name', 500)->unique();
+            $table->string('slug', 500)->unique();
             $table->longText('description')->nullable();
             $table->enum('state', TaxonomyStates::names());
             $table->enum('type', TaxonomyTypes::names());
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name', 500);
+            $table->string('slug', 500);
             $table->longText('description')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('terms')->onDelete('set null');
             $table->string('uri', 500);

@@ -23,6 +23,12 @@ class TermsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255)
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, ?string $state) {
+                        if ($state) {
+                            $set('slug', \Illuminate\Support\Str::slug($state));
+                        }
+                    })
                     ->rules([
                         function (Forms\Get $get) {
                             return function (string $attribute, $value, \Closure $fail) use ($get) {
@@ -41,6 +47,10 @@ class TermsRelationManager extends RelationManager
                             };
                         },
                     ]),
+                Forms\Components\TextInput::make('slug')
+                    ->disabled()
+                    ->dehydrated()
+                    ->helperText('Auto-generated from name'),
                 Forms\Components\Select::make('parent_id')
                     ->label('Parent Term')
                     ->options(function (Forms\Get $get) {

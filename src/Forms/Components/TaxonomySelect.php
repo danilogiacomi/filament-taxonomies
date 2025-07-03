@@ -64,12 +64,12 @@ class TaxonomySelect extends Select
         return $this->exactLevel(0);
     }
 
-    public function taxonomy(string $taxonomy): static
+    public function taxonomy(string $taxonomySlug): static
     {
-        $this->taxonomy = $taxonomy;
+        $this->taxonomy = $taxonomySlug;
 
-        $this->options(function () use ($taxonomy) {
-            $taxonomyModel = Taxonomy::where('name', $taxonomy)->first();
+        $this->options(function () use ($taxonomySlug) {
+            $taxonomyModel = Taxonomy::where('slug', $taxonomySlug)->first();
             if (!$taxonomyModel) {
                 return [];
             }
@@ -101,9 +101,9 @@ class TaxonomySelect extends Select
 
         $this->dehydrated(false);
 
-        $this->afterStateHydrated(function (Select $component, $state, $record) use ($taxonomy) {
+        $this->afterStateHydrated(function (Select $component, $state, $record) use ($taxonomySlug) {
             if ($record) {
-                $taxonomyModel = Taxonomy::where('name', $taxonomy)->first();
+                $taxonomyModel = Taxonomy::where('slug', $taxonomySlug)->first();
                 if (!$taxonomyModel) {
                     return;
                 }
@@ -127,9 +127,9 @@ class TaxonomySelect extends Select
             }
         });
 
-        $this->saveRelationshipsUsing(function (Select $component, $state, $record) use ($taxonomy) {
+        $this->saveRelationshipsUsing(function (Select $component, $state, $record) use ($taxonomySlug) {
             if ($record) {
-                $taxonomyModel = Taxonomy::where('name', $taxonomy)->first();
+                $taxonomyModel = Taxonomy::where('slug', $taxonomySlug)->first();
                 if (!$taxonomyModel) {
                     return;
                 }

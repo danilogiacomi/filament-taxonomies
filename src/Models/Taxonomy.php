@@ -21,7 +21,7 @@ class Taxonomy extends Model
 
     protected $table = 'taxonomies';
     protected $guarded = ['id'];
-    protected $fillable = ['name', 'description', 'state', 'type', 'uri'];
+    protected $fillable = ['name', 'slug', 'description', 'state', 'type', 'uri'];
 
     protected $casts = [
         'state' => TaxonomyStates::class,
@@ -53,12 +53,18 @@ class Taxonomy extends Model
     protected static function booted()
     {
         static::creating(function (Taxonomy $taxonomy) {
+            if (empty($taxonomy->slug)) {
+                $taxonomy->slug = Str::slug($taxonomy->name);
+            }
             if (empty($taxonomy->uri)) {
                 $taxonomy->uri = $taxonomy->generateInternalUri();
             }
         });
 
         static::updating(function (Taxonomy $taxonomy) {
+            if ($taxonomy->isDirty('name') && empty($taxonomy->slug)) {
+                $taxonomy->slug = Str::slug($taxonomy->name);
+            }
             if ($taxonomy->isDirty('name') && empty($taxonomy->getOriginal('uri'))) {
                 $taxonomy->uri = $taxonomy->generateInternalUri();
             }
