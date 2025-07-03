@@ -102,7 +102,7 @@ class Term extends Model
         });
 
         static::updating(function (Term $term) {
-            if ($term->isDirty('name') && empty($term->slug)) {
+            if ($term->isDirty('name')) {
                 $term->slug = Str::slug($term->name);
             }
             if ($term->isDirty('name') && $term->uri_type === UriTypes::internal) {
@@ -160,8 +160,14 @@ class Term extends Model
             return true;
         }
 
-        $appDomain = parse_url(env('APP_URL'), PHP_URL_HOST);
+        $appUrl = env('APP_URL', 'http://localhost');
+        $appDomain = parse_url($appUrl, PHP_URL_HOST);
         $uriDomain = parse_url($this->uri, PHP_URL_HOST);
+
+        // If we can't parse the domains, assume it's valid
+        if (!$appDomain || !$uriDomain) {
+            return true;
+        }
 
         return $uriDomain !== $appDomain;
     }

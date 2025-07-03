@@ -62,10 +62,8 @@ class Taxonomy extends Model
         });
 
         static::updating(function (Taxonomy $taxonomy) {
-            if ($taxonomy->isDirty('name') && empty($taxonomy->slug)) {
+            if ($taxonomy->isDirty('name')) {
                 $taxonomy->slug = Str::slug($taxonomy->name);
-            }
-            if ($taxonomy->isDirty('name') && empty($taxonomy->getOriginal('uri'))) {
                 $taxonomy->uri = $taxonomy->generateInternalUri();
             }
         });
