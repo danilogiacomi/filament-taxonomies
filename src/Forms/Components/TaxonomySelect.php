@@ -4,6 +4,7 @@ namespace Net7\FilamentTaxonomies\Forms\Components;
 
 use Filament\Forms\Components\Select;
 use Net7\FilamentTaxonomies\Models\Taxonomy;
+use Net7\FilamentTaxonomies\Models\Term;
 use Net7\FilamentTaxonomies\Models\EntityTerm;
 use Closure;
 
@@ -11,12 +12,56 @@ class TaxonomySelect extends Select
 {
     protected string $taxonomy;
     protected Closure|bool $isMultiple = false;
+    protected int|null $maxLevel = null;
+    protected int|null $minLevel = null;
+    protected int|null $exactLevel = null;
 
     public function multiple(Closure|bool $condition = true): static
     {
         $this->isMultiple = true;
         parent::multiple($condition);
         return $this;
+    }
+
+    public function maxLevel(int $level): static
+    {
+        if ($level < 0 || $level > Term::MAX_HIERARCHY_LEVEL) {
+            throw new \InvalidArgumentException(
+                "Level must be between 0 and " . Term::MAX_HIERARCHY_LEVEL
+            );
+        }
+        
+        $this->maxLevel = $level;
+        return $this;
+    }
+
+    public function minLevel(int $level): static
+    {
+        if ($level < 0 || $level > Term::MAX_HIERARCHY_LEVEL) {
+            throw new \InvalidArgumentException(
+                "Level must be between 0 and " . Term::MAX_HIERARCHY_LEVEL
+            );
+        }
+        
+        $this->minLevel = $level;
+        return $this;
+    }
+
+    public function exactLevel(int $level): static
+    {
+        if ($level < 0 || $level > Term::MAX_HIERARCHY_LEVEL) {
+            throw new \InvalidArgumentException(
+                "Level must be between 0 and " . Term::MAX_HIERARCHY_LEVEL
+            );
+        }
+        
+        $this->exactLevel = $level;
+        return $this;
+    }
+
+    public function rootLevel(): static
+    {
+        return $this->exactLevel(0);
     }
 
     public function taxonomy(string $taxonomy): static
@@ -29,7 +74,29 @@ class TaxonomySelect extends Select
                 return [];
             }
 
-            return $taxonomyModel->terms->pluck('name', 'id')->toArray();
+            $terms = $taxonomyModel->terms;
+
+            if ($this->exactLevel !== null || $this->minLevel !== null || $this->maxLevel !== null) {
+                $terms = $terms->filter(function ($term) {
+                    $level = $term->calculateLevel();
+
+                    if ($this->exactLevel !== null) {
+                        return $level === $this->exactLevel;
+                    }
+
+                    if ($this->minLevel !== null && $level < $this->minLevel) {
+                        return false;
+                    }
+
+                    if ($this->maxLevel !== null && $level > $this->maxLevel) {
+                        return false;
+                    }
+
+                    return true;
+                });
+            }
+
+            return $terms->pluck('name', 'id')->toArray();
         });
 
         $this->dehydrated(false);

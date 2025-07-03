@@ -2,12 +2,9 @@
 
 namespace Net7\FilamentTaxonomies\Filament\Resources;
 
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Split;
 use Filament\Tables\Actions\ActionGroup;
 use Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource\Pages;
 use Net7\FilamentTaxonomies\Models\Taxonomy;
-use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;

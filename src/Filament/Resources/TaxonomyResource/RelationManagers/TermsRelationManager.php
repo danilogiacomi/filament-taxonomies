@@ -45,12 +45,22 @@ class TermsRelationManager extends RelationManager
                     ->label('Parent Term')
                     ->options(function (Forms\Get $get) {
                         $currentId = $get('id');
-                        return Term::where('id', '!=', $currentId)
-                            ->pluck('name', 'id');
+
+                        // Get all potential parent terms
+                        $terms = Term::where('id', '!=', $currentId)->get();
+
+                        // Filter out terms that would create hierarchy level > MAX_HIERARCHY_LEVEL
+                        $validParents = $terms->filter(function ($term) {
+                            $parentLevel = $term->calculateLevel();
+                            return ($parentLevel + 1) < Term::MAX_HIERARCHY_LEVEL;
+                        });
+
+                        return $validParents->pluck('name', 'id');
                     })
                     ->searchable()
                     ->nullable()
                     ->preload()
+                    ->helperText('Maximum hierarchy depth is ' . Term::MAX_HIERARCHY_LEVEL . ' levels')
                     ->rules([
                         function () {
                             return function (string $attribute, $value, \Closure $fail) {
@@ -58,6 +68,14 @@ class TermsRelationManager extends RelationManager
                                     $currentId = request()->route('record');
                                     if ($value == $currentId) {
                                         $fail('A term cannot be its own parent.');
+                                    }
+                                }
+
+                                // Additional validation for hierarchy level
+                                if ($value) {
+                                    $parentTerm = Term::find($value);
+                                    if ($parentTerm && ($parentTerm->calculateLevel() + 1) >= Term::MAX_HIERARCHY_LEVEL) {
+                                        $fail('Selecting this parent would exceed the maximum hierarchy depth of ' . Term::MAX_HIERARCHY_LEVEL . ' levels.');
                                     }
                                 }
                             };
@@ -73,7 +91,7 @@ class TermsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')->wrap(),
                 Tables\Columns\TextColumn::make('description')
                     ->limit(50),
                 Tables\Columns\TextColumn::make('parent.name')
@@ -91,7 +109,6 @@ class TermsRelationManager extends RelationManager
                             $record->update(['uri' => $record->generateInternalUri()]);
                         }
                     }),
-                Tables\Actions\AttachAction::make()->preloadRecordSelect(),
             ])
             ->actions([
                 ActionGroup::make([
@@ -152,13 +169,11 @@ class TermsRelationManager extends RelationManager
                                 'exact_match_uri' => $data['exact_match_uri'],
                             ]);
                         }),
-                    Tables\Actions\DetachAction::make(),
                     Tables\Actions\DeleteAction::make(),
                 ])->iconButton()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DetachBulkAction::make(),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

@@ -19,6 +19,8 @@ class Term extends Model
     |--------------------------------------------------------------------------
     */
 
+    public const MAX_HIERARCHY_LEVEL = 10;
+
     protected $table = 'terms';
     protected $guarded = ['id'];
     protected $fillable = ['name', 'description', 'parent_id', 'uri', 'uri_type', 'exact_match_uri'];
@@ -28,6 +30,34 @@ class Term extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function calculateLevel(): int
+    {
+        $level = 0;
+        $currentTerm = $this;
+
+        while ($currentTerm->parent_id) {
+            $level++;
+            $currentTerm = $currentTerm->parent;
+
+            // Safety check to prevent infinite loops
+            if ($level > self::MAX_HIERARCHY_LEVEL) {
+                break;
+            }
+        }
+
+        return $level;
+    }
+
+    public function validateHierarchyLevel(): bool
+    {
+        if (!$this->parent_id) {
+            return true; // Root level is always valid
+        }
+
+        $parentLevel = $this->parent->calculateLevel();
+        return ($parentLevel + 1) <= self::MAX_HIERARCHY_LEVEL;
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -71,6 +101,14 @@ class Term extends Model
         static::updating(function (Term $term) {
             if ($term->isDirty('name') && $term->uri_type === UriTypes::internal) {
                 $term->uri = $term->generateInternalUri();
+            }
+        });
+
+        static::saving(function (Term $term) {
+            if ($term->parent_id && !$term->validateHierarchyLevel()) {
+                throw new \InvalidArgumentException(
+                    "Term hierarchy cannot exceed " . self::MAX_HIERARCHY_LEVEL . " levels"
+                );
             }
         });
     }
