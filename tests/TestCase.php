@@ -51,10 +51,20 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
+        config()->set('database.connections.testing', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ]);
 
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_filament-taxonomies_table.php.stub';
+        // Set APP_URL for testing
+        config()->set('app.url', 'http://localhost');
+
+        // Enable foreign key constraints for SQLite
+        $app['db']->connection()->getSchemaBuilder()->enableForeignKeyConstraints();
+
+        $migration = include __DIR__.'/../database/migrations/create_filament-taxonomies_table.php';
         $migration->up();
-        */
     }
 }
