@@ -103,16 +103,21 @@ class TaxonomySelect extends Select
 
         $this->afterStateHydrated(function (Select $component, $state, $record) use ($taxonomy) {
             if ($record) {
+                $taxonomyModel = Taxonomy::where('name', $taxonomy)->first();
+                if (!$taxonomyModel) {
+                    return;
+                }
+                
                 if ($this->evaluate($this->isMultiple)) {
                     $existingTerms = $record->entityTerms()
-                        ->where('taxonomy_type', $taxonomy)
+                        ->where('taxonomy_id', $taxonomyModel->id)
                         ->pluck('term_id')
                         ->toArray();
 
                     $component->state($existingTerms);
                 } else {
                     $existingTerm = $record->entityTerms()
-                        ->where('taxonomy_type', $taxonomy)
+                        ->where('taxonomy_id', $taxonomyModel->id)
                         ->first();
 
                     if ($existingTerm) {
@@ -124,10 +129,15 @@ class TaxonomySelect extends Select
 
         $this->saveRelationshipsUsing(function (Select $component, $state, $record) use ($taxonomy) {
             if ($record) {
+                $taxonomyModel = Taxonomy::where('name', $taxonomy)->first();
+                if (!$taxonomyModel) {
+                    return;
+                }
+                
                 if ($this->evaluate($this->isMultiple)) {
-                    $this->saveMultipleEntityTerms($record, $taxonomy, $state);
+                    $this->saveMultipleEntityTerms($record, $taxonomyModel->id, $state);
                 } else {
-                    $this->saveEntityTerm($record, $taxonomy, $state);
+                    $this->saveEntityTerm($record, $taxonomyModel->id, $state);
                 }
             }
         });
@@ -135,11 +145,11 @@ class TaxonomySelect extends Select
         return $this;
     }
 
-    protected function saveMultipleEntityTerms($record, string $taxonomyType, array $termIds): void
+    protected function saveMultipleEntityTerms($record, int $taxonomyId, array $termIds): void
     {
         EntityTerm::where('entity_type', get_class($record))
             ->where('entity_id', $record->id)
-            ->where('taxonomy_type', $taxonomyType)
+            ->where('taxonomy_id', $taxonomyId)
             ->delete();
 
         if (!empty($termIds)) {
@@ -148,7 +158,7 @@ class TaxonomySelect extends Select
                 $data[] = [
                     'entity_type' => get_class($record),
                     'entity_id' => $record->id,
-                    'taxonomy_type' => $taxonomyType,
+                    'taxonomy_id' => $taxonomyId,
                     'term_id' => $termId,
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -159,14 +169,14 @@ class TaxonomySelect extends Select
         }
     }
 
-    protected function saveEntityTerm($record, string $taxonomyType, $termId): void
+    protected function saveEntityTerm($record, int $taxonomyId, $termId): void
     {
         if ($termId) {
             EntityTerm::updateOrCreate(
                 [
                     'entity_type' => get_class($record),
                     'entity_id' => $record->id,
-                    'taxonomy_type' => $taxonomyType
+                    'taxonomy_id' => $taxonomyId
                 ],
                 [
                     'term_id' => $termId
@@ -175,7 +185,7 @@ class TaxonomySelect extends Select
         } else {
             EntityTerm::where('entity_type', get_class($record))
                 ->where('entity_id', $record->id)
-                ->where('taxonomy_type', $taxonomyType)
+                ->where('taxonomy_id', $taxonomyId)
                 ->delete();
         }
     }

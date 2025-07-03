@@ -44,11 +44,11 @@ return new class extends Migration
             $table->id();
             $table->string('entity_type');
             $table->unsignedBigInteger('entity_id');
-            $table->string('taxonomy_type', 500);
+            $table->foreignId('taxonomy_id')->constrained('taxonomies')->onDelete('cascade');
             $table->foreignId('term_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             $table->index(['entity_type', 'entity_id']);
-            $table->unique(['entity_type', 'entity_id', 'taxonomy_type', 'term_id'], 'entity_taxonomy_term_unique');
+            $table->unique(['entity_type', 'entity_id', 'taxonomy_id', 'term_id'], 'entity_taxonomy_term_unique');
         });
     }
 
