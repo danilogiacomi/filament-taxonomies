@@ -6,18 +6,21 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/net7/filament-taxonomies.svg?style=flat-square)](https://packagist.org/packages/net7/filament-taxonomies)
 
 
-A comprehensive Filament plugin for managing hierarchical taxonomies and terms with semantic metadata support. Perfect for organizing content with multiple classification systems including categories, tags, and controlled vocabularies.
+A comprehensive Filament plugin for managing hierarchical taxonomies and terms with advanced features including slug-based operations, level filtering, and semantic metadata support. Perfect for organizing content with multiple classification systems including categories, tags, and controlled vocabularies with enterprise-grade reliability.
 
 ## Features
 
-- **Hierarchical Taxonomies**: Create and manage multi-level taxonomy structures
-- **Flexible Terms**: Support for parent-child relationships between terms
-- **Level Filtering**: Filter terms by hierarchy level in form components
-- **Hierarchy Limit**: Built-in 10-level maximum depth protection
+- **Hierarchical Taxonomies**: Create and manage multi-level taxonomy structures with parent-child relationships
+- **Flexible Terms**: Support for unlimited hierarchy depth with built-in 10-level protection
+- **Level Filtering**: Advanced filtering system to show terms by specific hierarchy levels
+- **Slug-Based Operations**: URL-friendly slugs for reliable, case-insensitive operations
+- **Auto-Generated Slugs**: Automatic slug generation from names for both taxonomies and terms
 - **Semantic Metadata**: Built-in URI management with internal auto-generation and external URI support
 - **Multiple Taxonomy Types**: Public, restricted, and private taxonomy classifications
 - **State Management**: Working and published states for content lifecycle management
-- **Unique Constraints**: Automatic validation to prevent duplicate taxonomy names
+- **Polymorphic Relationships**: Works with any Laravel model via the HasTaxonomies trait
+- **Foreign Key Integrity**: Proper database relationships with cascade delete protection
+- **Unique Constraints**: Automatic validation to prevent duplicate taxonomy names and slugs
 - **Bulk Operations**: Efficient management of large taxonomy datasets 
 
 ## Installation
@@ -98,45 +101,53 @@ The plugin provides advanced semantic metadata management through dedicated acti
 
 ### Using the TaxonomySelect Component
 
-The plugin includes a custom Filament form component that supports level filtering:
+The plugin includes a powerful Filament form component with advanced level filtering and slug-based operations:
 
 ```php
 use Net7\FilamentTaxonomies\Forms\Components\TaxonomySelect;
 
-// Basic usage
+// Basic usage (uses taxonomy slug for reliable operations)
 TaxonomySelect::make('categories')
-    ->taxonomy('Product Categories')
+    ->taxonomy('product-categories') // Slug-based (case-insensitive, reliable)
     ->multiple(),
 
 // Root level only (level 0)
 TaxonomySelect::make('main_category')
-    ->taxonomy('Product Categories')
+    ->taxonomy('product-categories')
     ->rootLevel(),
 
 // Specific level only
 TaxonomySelect::make('subcategories')
-    ->taxonomy('Product Categories')
+    ->taxonomy('product-categories')
     ->exactLevel(1),
 
-// Maximum level filtering
+// Maximum level filtering (up to level 2)
 TaxonomySelect::make('categories')
-    ->taxonomy('Product Categories')
+    ->taxonomy('product-categories')
     ->maxLevel(2)
     ->multiple(),
 
-// Minimum level filtering
+// Minimum level filtering (level 2 and deeper)
 TaxonomySelect::make('detailed_tags')
-    ->taxonomy('Product Categories')
+    ->taxonomy('product-categories')
     ->minLevel(2)
     ->multiple(),
 
-// Range filtering
+// Range filtering (levels 1-3)
 TaxonomySelect::make('mid_level_categories')
-    ->taxonomy('Product Categories')
+    ->taxonomy('product-categories')
     ->minLevel(1)
     ->maxLevel(3)
     ->multiple(),
 ```
+
+### Slug-Based Operations
+
+All operations now use slugs for reliability while maintaining user-friendly names in the interface:
+
+- **Operations**: Use taxonomy slugs (e.g., `'product-categories'`)
+- **Display**: Show human-readable names (e.g., "Product Categories")
+- **Benefits**: Case-insensitive, URL-safe, no special character issues
 
 ### Hierarchy Level Management
 
@@ -188,6 +199,59 @@ public static function form(Form $form): Form
 }
 ```
 
+### Working with Models
+
+The `HasTaxonomies` trait provides multiple approaches for different use cases:
+
+```php
+use Net7\FilamentTaxonomies\Traits\HasTaxonomies;
+
+class Product extends Model
+{
+    use HasTaxonomies;
+}
+
+// Recommended approach (using taxonomy slug - reliable & case-insensitive)
+$product->setTermsForTaxonomySlug('product-categories', [1, 2, 3]);
+$terms = $product->getTermsForTaxonomySlug('product-categories');
+$hasTag = $product->hasTermInTaxonomySlug('product-categories', 2);
+
+// Alternative approach (using taxonomy ID - most efficient)
+$product->setTermsForTaxonomyId(1, [1, 2, 3]);
+$terms = $product->getTermsForTaxonomyId(1);
+$hasTag = $product->hasTermInTaxonomyId(1, 2);
+
+// Legacy support (using taxonomy name - deprecated)
+$product->setTermsForTaxonomy('Product Categories', [1, 2, 3]);
+$terms = $product->getTermsForTaxonomy('Product Categories');
+$hasTag = $product->hasTermInTaxonomy('Product Categories', 2);
+```
+
+### Database Schema
+
+The plugin creates an optimized database structure with proper relationships:
+
+#### Tables
+- **`taxonomies`**: Main taxonomy definitions with auto-generated slugs
+- **`terms`**: Hierarchical terms with parent-child relationships and auto-generated slugs  
+- **`taxonomy_term`**: Many-to-many pivot between taxonomies and terms
+- **`entity_terms`**: Polymorphic relationships between any model and terms
+
+#### Key Features
+- **Foreign Key Constraints**: Proper referential integrity with cascade deletes
+- **Unique Constraints**: Prevents duplicate names and slugs
+- **Indexes**: Optimized for fast queries on taxonomy_id and entity relationships
+- **Polymorphic Support**: Works with any Eloquent model
+
+### Auto-Generated Slugs
+
+Both taxonomies and terms automatically generate URL-friendly slugs:
+
+- **Taxonomies**: `"Product Categories"` → `"product-categories"`
+- **Terms**: `"Web Development"` → `"web-development"`
+- **Features**: Automatic generation, unique constraints, read-only in admin interface
+- **Benefits**: SEO-friendly URLs, case-insensitive operations, special character handling
+
 ### Available Enums
 
 #### TaxonomyStates
@@ -211,6 +275,40 @@ The package includes seeders for development and testing:
 php artisan db:seed --class="Net7\FilamentTaxonomies\Database\Seeders\TaxonomySeeder"
 php artisan db:seed --class="Net7\FilamentTaxonomies\Database\Seeders\TermSeeder"
 ```
+
+## Recent Improvements & New Features
+
+### v2.0 Updates
+
+#### 🔥 Slug-Based Operations
+- **Auto-generated slugs** for both taxonomies and terms
+- **Case-insensitive operations** using slugs instead of names
+- **URL-friendly identifiers** for better SEO and API usage
+- **Backward compatibility** maintained with name-based methods
+
+#### 🎯 Advanced Level Filtering
+- **Exact level selection**: `exactLevel(1)` for specific hierarchy levels
+- **Range filtering**: `minLevel(1)->maxLevel(3)` for level ranges
+- **Root level shortcuts**: `rootLevel()` for top-level terms only
+- **Maximum depth protection**: Built-in 10-level hierarchy limit
+
+#### 🏗️ Enhanced Database Structure
+- **Foreign key constraints** with proper referential integrity
+- **Taxonomy ID references** instead of names for better performance
+- **Optimized indexes** for faster queries
+- **Cascade delete protection** for data consistency
+
+#### 🛡️ Enterprise Features
+- **Hierarchy validation** prevents infinite loops and deep nesting
+- **Unique constraints** on both names and slugs
+- **Polymorphic relationships** work with any Laravel model
+- **Admin interface protection** with disabled slug editing
+
+#### 📊 Developer Experience
+- **Three operation methods**: By ID (fastest), by slug (recommended), by name (legacy)
+- **Real-time slug generation** in admin interface
+- **Clear deprecation notices** for migration guidance
+- **Comprehensive documentation** with practical examples
 
 ## Testing
 
