@@ -1,13 +1,63 @@
-.DS_Store
-.idea
-.phpunit.result.cache
-.vscode
-build
+# Dependencies
+vendor/
+node_modules/
 composer.lock
-coverage
-docs
-node_modules
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Testing
+.phpunit.result.cache
+coverage/
+.coverage
+*.coverage
 phpunit.xml
-phpstan.neon
+pest.xml
 testbench.yaml
-vendor
+
+# Build artifacts
+build/
+dist/
+.temp/
+
+# Configuration files
+phpstan.neon
+psalm.xml
+.php_cs.cache
+.php-cs-fixer.cache
+
+# Laravel specific
+.env
+.env.backup
+.env.production
+storage/
+bootstrap/cache/
+public/storage
+public/hot
+public/build
+public/mix-manifest.json
+
+# Logs
+*.log
+logs/
+
+# Cache
+cache/
+*.cache
+
+# Documentation build
+docs/_build/
+docs/.doctrees/
