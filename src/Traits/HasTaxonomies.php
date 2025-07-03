@@ -7,6 +7,13 @@ use Net7\FilamentTaxonomies\Models\Taxonomy;
 
 trait HasTaxonomies
 {
+    public static function bootHasTaxonomies()
+    {
+        static::deleting(function ($model) {
+            $model->entityTerms()->delete();
+        });
+    }
+
     public function entityTerms()
     {
         return $this->morphMany(EntityTerm::class, 'entity');
