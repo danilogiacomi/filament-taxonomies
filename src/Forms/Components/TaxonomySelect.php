@@ -64,6 +64,31 @@ class TaxonomySelect extends Select
         return $this->exactLevel(0);
     }
 
+    public function getExactLevel(): ?int
+    {
+        return $this->exactLevel;
+    }
+
+    public function getMinLevel(): ?int
+    {
+        return $this->minLevel;
+    }
+
+    public function getMaxLevel(): ?int
+    {
+        return $this->maxLevel;
+    }
+
+    public function getTaxonomy(): ?string
+    {
+        return $this->taxonomy;
+    }
+
+    public function isMultiple(): bool
+    {
+        return $this->evaluate($this->isMultiple);
+    }
+
     public function taxonomy(string $taxonomySlug): static
     {
         $this->taxonomy = $taxonomySlug;
