@@ -14,9 +14,9 @@ use Filament\Tables\TablesServiceProvider;
 use Filament\Widgets\WidgetsServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Livewire\LivewireServiceProvider;
+use Net7\FilamentTaxonomies\FilamentTaxonomiesServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
-use Net7\FilamentTaxonomies\FilamentTaxonomiesServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -25,7 +25,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Net7\\FilamentTaxonomies\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'Net7\\FilamentTaxonomies\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
@@ -51,10 +51,20 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
+        config()->set('database.connections.testing', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ]);
 
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_filament-taxonomies_table.php.stub';
+        // Set APP_URL for testing
+        config()->set('app.url', 'http://localhost');
+
+        // Enable foreign key constraints for SQLite
+        $app['db']->connection()->getSchemaBuilder()->enableForeignKeyConstraints();
+
+        $migration = include __DIR__.'/../database/migrations/create_filament-taxonomies_table.php';
         $migration->up();
-        */
     }
 }

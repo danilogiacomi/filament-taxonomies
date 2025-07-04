@@ -4,9 +4,8 @@ namespace Net7\FilamentTaxonomies;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
-use Net7\FilamentTaxonomies\Filament\Pages\Concept;
-use Net7\FilamentTaxonomies\Filament\Resources\ConceptResource;
-use Net7\FilamentTaxonomies\Filament\Resources\ConceptSchemaResource;
+use Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource;
+use Net7\FilamentTaxonomies\Filament\Resources\TermResource;
 
 class FilamentTaxonomies implements Plugin
 {
@@ -19,11 +18,11 @@ class FilamentTaxonomies implements Plugin
     {
         $panel
             ->resources([
-                // ConceptResource::class,
-                ConceptSchemaResource::class,
+                TaxonomyResource::class,
+                TermResource::class,
             ])
             ->pages([
-                // Concept::class,
+                //
             ]);
     }
 

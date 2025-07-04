@@ -2,27 +2,20 @@
 
 namespace Net7\FilamentTaxonomies;
 
-use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
-use Filament\Support\Assets\Css;
-use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
-use Livewire\Features\SupportTesting\Testable;
+use Net7\FilamentTaxonomies\Commands\FilamentTaxonomiesCommand;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Net7\FilamentTaxonomies\Commands\FilamentTaxonomiesCommand;
-use Net7\FilamentTaxonomies\Testing\TestsFilamentTaxonomies;
 
 class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
 {
     public static string $name = 'filament-taxonomies';
 
     public static string $viewNamespace = 'filament-taxonomies';
-
-
 
     public function configurePackage(Package $package): void
     {
@@ -54,10 +47,6 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
             $package->hasConfigFile();
         }
 
-        // if (file_exists($package->basePath('/../assets'))) {
-        //     $package->hasAssets($this->getAssets());
-        // }
-
         if (file_exists($package->basePath('/../database/migrations'))) {
             $package->hasMigrations($this->getMigrations());
         }
@@ -71,9 +60,7 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
         }
     }
 
-    public function packageRegistered(): void
-    {
-    }
+    public function packageRegistered(): void {}
 
     public function packageBooted(): void
     {
@@ -93,15 +80,20 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
 
         // Handle Stubs
         if (app()->runningInConsole()) {
-            foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
+            foreach (app(Filesystem::class)->files(__DIR__.'/../stubs/') as $file) {
                 $this->publishes([
                     $file->getRealPath() => base_path("stubs/filament-taxonomies/{$file->getFilename()}"),
                 ], 'filament-taxonomies-stubs');
             }
         }
 
-        // Testing
-        Testable::mixin(new TestsFilamentTaxonomies());
+        // Publish seeders
+        if (app()->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../database/seeders' => database_path('seeders'),
+            ], 'filament-taxonomies-seeders');
+        }
+
     }
 
     protected function getAssetPackageName(): ?string
@@ -115,15 +107,8 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
     protected function getAssets(): array
     {
         return [
-
-            
-            // Asset::make('filament-taxonomies-jsonld', __DIR__ . '/../assets/jsonld/'),
-            // AlpineComponent::make('filament-taxonomies', __DIR__ . '/../resources/dist/components/filament-taxonomies.js'),
-            // Css::make('filament-taxonomies-styles', __DIR__ . '/../resources/dist/filament-taxonomies.css'),
-            // Js::make('filament-taxonomies-scripts', __DIR__ . '/../resources/dist/filament-taxonomies.js'),
         ];
     }
-
 
     /**
      * @return array<class-string>
