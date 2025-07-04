@@ -22,6 +22,8 @@ class TaxonomySelect extends Select
 
     protected ?string $parentItemFrom = null;
 
+    protected ?string $type = null;
+
     public function multiple(Closure|bool $condition = true): static
     {
         $this->isMultiple = true;
@@ -94,6 +96,15 @@ class TaxonomySelect extends Select
         return $this->taxonomy;
     }
 
+    public function getType(): ?string
+    {
+        if ($this->type) {
+            return $this->type;
+        }
+
+        return $this->getName();
+    }
+
     public function isMultiple(): bool
     {
         return $this->evaluate($this->isMultiple);
@@ -102,6 +113,13 @@ class TaxonomySelect extends Select
     public function parentItemFrom(string $parentItemFrom): static
     {
         $this->parentItemFrom = $parentItemFrom;
+
+        return $this;
+    }
+
+    public function type(string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }
@@ -160,14 +178,14 @@ class TaxonomySelect extends Select
                 }
 
                 if ($this->evaluate($this->isMultiple)) {
-                    $existingTerms = $record->entityTerms()
+                    $existingTerms = $record->getTermsByType($this->getType())
                         ->where('taxonomy_id', $taxonomyModel->id)
                         ->pluck('term_id')
                         ->toArray();
 
                     $component->state($existingTerms);
                 } else {
-                    $existingTerm = $record->entityTerms()
+                    $existingTerm = $record->getTermsByType($this->getType())
                         ->where('taxonomy_id', $taxonomyModel->id)
                         ->first();
 
@@ -211,6 +229,7 @@ class TaxonomySelect extends Select
                     'entity_id' => $record->id,
                     'taxonomy_id' => $taxonomyId,
                     'term_id' => $termId,
+                    'type' => $this->getType(),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
@@ -228,6 +247,7 @@ class TaxonomySelect extends Select
                     'entity_type' => get_class($record),
                     'entity_id' => $record->id,
                     'taxonomy_id' => $taxonomyId,
+                    'type' => $this->getType(),
                 ],
                 [
                     'term_id' => $termId,

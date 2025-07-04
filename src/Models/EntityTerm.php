@@ -9,6 +9,7 @@ class EntityTerm extends Model
     protected $fillable = [
         'entity_type',
         'entity_id',
+        'type',
         'taxonomy_id',
         'term_id',
     ];
