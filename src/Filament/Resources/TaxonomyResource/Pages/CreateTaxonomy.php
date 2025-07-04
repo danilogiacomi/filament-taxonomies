@@ -2,10 +2,9 @@
 
 namespace Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource\Pages;
 
-use Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource;
 use Filament\Actions;
-use Filament\Forms\Components\Placeholder;
 use Filament\Resources\Pages\CreateRecord;
+use Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource;
 
 class CreateTaxonomy extends CreateRecord
 {
@@ -13,7 +12,7 @@ class CreateTaxonomy extends CreateRecord
 
     protected function getRedirectUrl(): string
     {
-        return  $this->getResource()::getUrl('index');
+        return $this->getResource()::getUrl('index');
     }
 
     protected function getHeaderActions(): array
@@ -30,4 +29,3 @@ class CreateTaxonomy extends CreateRecord
         ];
     }
 }
-

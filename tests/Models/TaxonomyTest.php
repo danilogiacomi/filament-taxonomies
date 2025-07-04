@@ -2,10 +2,10 @@
 
 namespace Net7\FilamentTaxonomies\Tests\Models;
 
-use Net7\FilamentTaxonomies\Models\Taxonomy;
-use Net7\FilamentTaxonomies\Models\Term;
 use Net7\FilamentTaxonomies\Enums\TaxonomyStates;
 use Net7\FilamentTaxonomies\Enums\TaxonomyTypes;
+use Net7\FilamentTaxonomies\Models\Taxonomy;
+use Net7\FilamentTaxonomies\Models\Term;
 use Net7\FilamentTaxonomies\Tests\TestCase;
 
 class TaxonomyTest extends TestCase
@@ -81,7 +81,7 @@ class TaxonomyTest extends TestCase
             'type' => TaxonomyTypes::public,
         ]);
 
-        $expectedUri = env('APP_URL', 'http://localhost') . '/product-categories';
+        $expectedUri = env('APP_URL', 'http://localhost').'/product-categories';
         $this->assertEquals($expectedUri, $taxonomy->uri);
     }
 
@@ -95,7 +95,7 @@ class TaxonomyTest extends TestCase
         ]);
 
         $this->expectException(\Illuminate\Database\QueryException::class);
-        
+
         Taxonomy::create([
             'name' => 'Categories', // Same name, should generate same slug
             'state' => TaxonomyStates::working,

@@ -3,20 +3,20 @@
 namespace Net7\FilamentTaxonomies\Tests\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Net7\FilamentTaxonomies\Enums\TaxonomyStates;
+use Net7\FilamentTaxonomies\Enums\TaxonomyTypes;
 use Net7\FilamentTaxonomies\Models\EntityTerm;
 use Net7\FilamentTaxonomies\Models\Taxonomy;
 use Net7\FilamentTaxonomies\Models\Term;
-use Net7\FilamentTaxonomies\Traits\HasTaxonomies;
-use Net7\FilamentTaxonomies\Enums\TaxonomyStates;
-use Net7\FilamentTaxonomies\Enums\TaxonomyTypes;
 use Net7\FilamentTaxonomies\Tests\TestCase;
+use Net7\FilamentTaxonomies\Traits\HasTaxonomies;
 
 class EntityTermTest extends TestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create test model table
         $this->app['db']->connection()->getSchemaBuilder()->create('test_entities', function ($table) {
             $table->id();
@@ -29,7 +29,7 @@ class EntityTermTest extends TestCase
     public function it_can_create_entity_term_relationship()
     {
         $entity = TestEntity::create(['name' => 'Test Entity']);
-        
+
         $taxonomy = Taxonomy::create([
             'name' => 'Categories',
             'state' => TaxonomyStates::published,
@@ -57,7 +57,7 @@ class EntityTermTest extends TestCase
     public function it_belongs_to_entity_polymorphically()
     {
         $entity = TestEntity::create(['name' => 'Test Entity']);
-        
+
         $taxonomy = Taxonomy::create([
             'name' => 'Categories',
             'state' => TaxonomyStates::published,
@@ -81,7 +81,7 @@ class EntityTermTest extends TestCase
     public function it_belongs_to_term()
     {
         $entity = TestEntity::create(['name' => 'Test Entity']);
-        
+
         $taxonomy = Taxonomy::create([
             'name' => 'Categories',
             'state' => TaxonomyStates::published,
@@ -105,7 +105,7 @@ class EntityTermTest extends TestCase
     public function it_belongs_to_taxonomy()
     {
         $entity = TestEntity::create(['name' => 'Test Entity']);
-        
+
         $taxonomy = Taxonomy::create([
             'name' => 'Categories',
             'state' => TaxonomyStates::published,
@@ -129,7 +129,7 @@ class EntityTermTest extends TestCase
     public function it_enforces_unique_constraint()
     {
         $entity = TestEntity::create(['name' => 'Test Entity']);
-        
+
         $taxonomy = Taxonomy::create([
             'name' => 'Categories',
             'state' => TaxonomyStates::published,
@@ -148,7 +148,7 @@ class EntityTermTest extends TestCase
 
         // Attempt to create duplicate should fail
         $this->expectException(\Illuminate\Database\QueryException::class);
-        
+
         EntityTerm::create([
             'entity_type' => TestEntity::class,
             'entity_id' => $entity->id,
@@ -161,7 +161,7 @@ class EntityTermTest extends TestCase
     public function it_cascades_delete_when_taxonomy_is_deleted()
     {
         $entity = TestEntity::create(['name' => 'Test Entity']);
-        
+
         $taxonomy = Taxonomy::create([
             'name' => 'Categories',
             'state' => TaxonomyStates::published,
@@ -190,7 +190,7 @@ class EntityTermTest extends TestCase
     public function it_cascades_delete_when_term_is_deleted()
     {
         $entity = TestEntity::create(['name' => 'Test Entity']);
-        
+
         $taxonomy = Taxonomy::create([
             'name' => 'Categories',
             'state' => TaxonomyStates::published,
@@ -221,5 +221,6 @@ class TestEntity extends Model
     use HasTaxonomies;
 
     protected $fillable = ['name'];
+
     protected $table = 'test_entities';
 }

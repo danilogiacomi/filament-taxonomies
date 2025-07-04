@@ -2,11 +2,11 @@
 
 namespace Net7\FilamentTaxonomies\Filament\Resources;
 
-use Net7\FilamentTaxonomies\Filament\Resources\TermResource\Pages;
-use Net7\FilamentTaxonomies\Models\Term;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
+use Net7\FilamentTaxonomies\Filament\Resources\TermResource\Pages;
+use Net7\FilamentTaxonomies\Models\Term;
 
 class TermResource extends Resource
 {
@@ -16,7 +16,8 @@ class TermResource extends Resource
 
     protected static bool $shouldRegisterNavigation = false;
 
-    public static function getFormSchema(){
+    public static function getFormSchema()
+    {
         return [];
     }
 

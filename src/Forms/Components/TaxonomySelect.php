@@ -2,25 +2,31 @@
 
 namespace Net7\FilamentTaxonomies\Forms\Components;
 
+use Closure;
 use Filament\Forms\Components\Select;
+use Net7\FilamentTaxonomies\Models\EntityTerm;
 use Net7\FilamentTaxonomies\Models\Taxonomy;
 use Net7\FilamentTaxonomies\Models\Term;
-use Net7\FilamentTaxonomies\Models\EntityTerm;
-use Closure;
 
 class TaxonomySelect extends Select
 {
     protected string $taxonomy;
+
     protected Closure|bool $isMultiple = false;
-    protected int|null $maxLevel = null;
-    protected int|null $minLevel = null;
-    protected int|null $exactLevel = null;
-    protected string|null $parentItemFrom = null;
+
+    protected ?int $maxLevel = null;
+
+    protected ?int $minLevel = null;
+
+    protected ?int $exactLevel = null;
+
+    protected ?string $parentItemFrom = null;
 
     public function multiple(Closure|bool $condition = true): static
     {
         $this->isMultiple = true;
         parent::multiple($condition);
+
         return $this;
     }
 
@@ -28,11 +34,12 @@ class TaxonomySelect extends Select
     {
         if ($level < 0 || $level > Term::MAX_HIERARCHY_LEVEL) {
             throw new \InvalidArgumentException(
-                "Level must be between 0 and " . Term::MAX_HIERARCHY_LEVEL
+                'Level must be between 0 and '.Term::MAX_HIERARCHY_LEVEL
             );
         }
-        
+
         $this->maxLevel = $level;
+
         return $this;
     }
 
@@ -40,11 +47,12 @@ class TaxonomySelect extends Select
     {
         if ($level < 0 || $level > Term::MAX_HIERARCHY_LEVEL) {
             throw new \InvalidArgumentException(
-                "Level must be between 0 and " . Term::MAX_HIERARCHY_LEVEL
+                'Level must be between 0 and '.Term::MAX_HIERARCHY_LEVEL
             );
         }
-        
+
         $this->minLevel = $level;
+
         return $this;
     }
 
@@ -52,11 +60,12 @@ class TaxonomySelect extends Select
     {
         if ($level < 0 || $level > Term::MAX_HIERARCHY_LEVEL) {
             throw new \InvalidArgumentException(
-                "Level must be between 0 and " . Term::MAX_HIERARCHY_LEVEL
+                'Level must be between 0 and '.Term::MAX_HIERARCHY_LEVEL
             );
         }
-        
+
         $this->exactLevel = $level;
+
         return $this;
     }
 
@@ -93,6 +102,7 @@ class TaxonomySelect extends Select
     public function parentItemFrom(string $parentItemFrom): static
     {
         $this->parentItemFrom = $parentItemFrom;
+
         return $this;
     }
 
@@ -102,13 +112,13 @@ class TaxonomySelect extends Select
 
         $this->options(function ($get) use ($taxonomySlug) {
             $taxonomyModel = Taxonomy::where('slug', $taxonomySlug)->first();
-            if (!$taxonomyModel) {
+            if (! $taxonomyModel) {
                 return [];
             }
 
             if ($this->parentItemFrom) {
                 $parentItemId = $get($this->parentItemFrom);
-                if (!$parentItemId) {
+                if (! $parentItemId) {
                     return [];
                 }
 
@@ -116,7 +126,6 @@ class TaxonomySelect extends Select
             } else {
                 $terms = $taxonomyModel->terms;
             }
-
 
             if ($this->exactLevel !== null || $this->minLevel !== null || $this->maxLevel !== null) {
                 $terms = $terms->filter(function ($term) {
@@ -146,10 +155,10 @@ class TaxonomySelect extends Select
         $this->afterStateHydrated(function (Select $component, $state, $record) use ($taxonomySlug) {
             if ($record) {
                 $taxonomyModel = Taxonomy::where('slug', $taxonomySlug)->first();
-                if (!$taxonomyModel) {
+                if (! $taxonomyModel) {
                     return;
                 }
-                
+
                 if ($this->evaluate($this->isMultiple)) {
                     $existingTerms = $record->entityTerms()
                         ->where('taxonomy_id', $taxonomyModel->id)
@@ -172,10 +181,10 @@ class TaxonomySelect extends Select
         $this->saveRelationshipsUsing(function (Select $component, $state, $record) use ($taxonomySlug) {
             if ($record) {
                 $taxonomyModel = Taxonomy::where('slug', $taxonomySlug)->first();
-                if (!$taxonomyModel) {
+                if (! $taxonomyModel) {
                     return;
                 }
-                
+
                 if ($this->evaluate($this->isMultiple)) {
                     $this->saveMultipleEntityTerms($record, $taxonomyModel->id, $state);
                 } else {
@@ -194,7 +203,7 @@ class TaxonomySelect extends Select
             ->where('taxonomy_id', $taxonomyId)
             ->delete();
 
-        if (!empty($termIds)) {
+        if (! empty($termIds)) {
             $data = [];
             foreach ($termIds as $termId) {
                 $data[] = [
@@ -218,10 +227,10 @@ class TaxonomySelect extends Select
                 [
                     'entity_type' => get_class($record),
                     'entity_id' => $record->id,
-                    'taxonomy_id' => $taxonomyId
+                    'taxonomy_id' => $taxonomyId,
                 ],
                 [
-                    'term_id' => $termId
+                    'term_id' => $termId,
                 ]
             );
         } else {

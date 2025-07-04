@@ -2,11 +2,11 @@
 
 namespace Net7\FilamentTaxonomies\Tests\Forms;
 
+use Net7\FilamentTaxonomies\Enums\TaxonomyStates;
+use Net7\FilamentTaxonomies\Enums\TaxonomyTypes;
 use Net7\FilamentTaxonomies\Forms\Components\TaxonomySelect;
 use Net7\FilamentTaxonomies\Models\Taxonomy;
 use Net7\FilamentTaxonomies\Models\Term;
-use Net7\FilamentTaxonomies\Enums\TaxonomyStates;
-use Net7\FilamentTaxonomies\Enums\TaxonomyTypes;
 use Net7\FilamentTaxonomies\Tests\TestCase;
 
 class TaxonomySelectTest extends TestCase
@@ -14,7 +14,7 @@ class TaxonomySelectTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create test taxonomy with hierarchical terms
         $this->taxonomy = Taxonomy::create([
             'name' => 'Test Categories',
@@ -92,7 +92,7 @@ class TaxonomySelectTest extends TestCase
     public function it_validates_level_parameters()
     {
         $this->expectException(\InvalidArgumentException::class);
-        
+
         TaxonomySelect::make('categories')
             ->exactLevel(15); // Should fail - exceeds MAX_HIERARCHY_LEVEL
     }
@@ -101,7 +101,7 @@ class TaxonomySelectTest extends TestCase
     public function it_validates_min_level_parameter()
     {
         $this->expectException(\InvalidArgumentException::class);
-        
+
         TaxonomySelect::make('categories')
             ->minLevel(-1); // Should fail - negative level
     }
@@ -110,7 +110,7 @@ class TaxonomySelectTest extends TestCase
     public function it_validates_max_level_parameter()
     {
         $this->expectException(\InvalidArgumentException::class);
-        
+
         TaxonomySelect::make('categories')
             ->maxLevel(15); // Should fail - exceeds MAX_HIERARCHY_LEVEL
     }

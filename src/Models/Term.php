@@ -2,7 +2,6 @@
 
 namespace Net7\FilamentTaxonomies\Models;
 
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -22,7 +21,9 @@ class Term extends Model
     public const MAX_HIERARCHY_LEVEL = 10;
 
     protected $table = 'terms';
+
     protected $guarded = ['id'];
+
     protected $fillable = ['name', 'slug', 'description', 'parent_id', 'uri', 'uri_type', 'exact_match_uri'];
 
     /*
@@ -51,11 +52,12 @@ class Term extends Model
 
     public function validateHierarchyLevel(): bool
     {
-        if (!$this->parent_id) {
+        if (! $this->parent_id) {
             return true; // Root level is always valid
         }
 
         $parentLevel = $this->parent->calculateLevel();
+
         return ($parentLevel + 1) <= self::MAX_HIERARCHY_LEVEL;
     }
 
@@ -111,9 +113,9 @@ class Term extends Model
         });
 
         static::saving(function (Term $term) {
-            if ($term->parent_id && !$term->validateHierarchyLevel()) {
+            if ($term->parent_id && ! $term->validateHierarchyLevel()) {
                 throw new \InvalidArgumentException(
-                    "Term hierarchy cannot exceed " . self::MAX_HIERARCHY_LEVEL . " levels"
+                    'Term hierarchy cannot exceed '.self::MAX_HIERARCHY_LEVEL.' levels'
                 );
             }
         });
@@ -143,6 +145,7 @@ class Term extends Model
         $taxonomy = $this->taxonomies()->first();
         if ($taxonomy) {
             $taxonomySlug = Str::slug($taxonomy->name);
+
             return "{$baseUrl}/{$taxonomySlug}/{$termSlug}";
         }
 
@@ -165,7 +168,7 @@ class Term extends Model
         $uriDomain = parse_url($this->uri, PHP_URL_HOST);
 
         // If we can't parse the domains, assume it's valid
-        if (!$appDomain || !$uriDomain) {
+        if (! $appDomain || ! $uriDomain) {
             return true;
         }
 
@@ -183,6 +186,5 @@ class Term extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-
 
 }

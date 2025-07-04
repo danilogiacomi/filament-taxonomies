@@ -1,9 +1,9 @@
 <?php
 
-use Net7\FilamentTaxonomies\Models\Taxonomy;
-use Net7\FilamentTaxonomies\Models\Term;
 use Net7\FilamentTaxonomies\Enums\TaxonomyStates;
 use Net7\FilamentTaxonomies\Enums\TaxonomyTypes;
+use Net7\FilamentTaxonomies\Models\Taxonomy;
+use Net7\FilamentTaxonomies\Models\Term;
 
 it('can create a complete taxonomy with terms', function () {
     $taxonomy = Taxonomy::create([

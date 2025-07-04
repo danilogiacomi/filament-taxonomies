@@ -2,9 +2,9 @@
 
 namespace Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource\Pages;
 
-use Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource;
 
 class ListTaxonomies extends ListRecords
 {
@@ -16,6 +16,4 @@ class ListTaxonomies extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
-
-
 }

@@ -2,12 +2,10 @@
 
 namespace Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource\Pages;
 
-use Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource;
-use Net7\FilamentTaxonomies\Models\Taxonomy;
 use Filament\Actions;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\EditRecord;
-
+use Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource;
 
 class EditTaxonomy extends EditRecord
 {
@@ -15,7 +13,7 @@ class EditTaxonomy extends EditRecord
 
     protected function getRedirectUrl(): string
     {
-        return  $this->getResource()::getUrl('index');
+        return $this->getResource()::getUrl('index');
     }
 
     protected function getHeaderActions(): array
@@ -30,7 +28,7 @@ class EditTaxonomy extends EditRecord
                         ->label('URI')
                         ->disabled()
                         ->dehydrated(false)
-                        ->helperText('Auto-generated from taxonomy name')
+                        ->helperText('Auto-generated from taxonomy name'),
                 ])
                 ->fillForm(fn (): array => [
                     'uri' => $this->record->uri,

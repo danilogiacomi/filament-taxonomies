@@ -2,11 +2,11 @@
 
 namespace Net7\FilamentTaxonomies\Tests\Models;
 
-use Net7\FilamentTaxonomies\Models\Term;
-use Net7\FilamentTaxonomies\Models\Taxonomy;
 use Net7\FilamentTaxonomies\Enums\TaxonomyStates;
 use Net7\FilamentTaxonomies\Enums\TaxonomyTypes;
 use Net7\FilamentTaxonomies\Enums\UriTypes;
+use Net7\FilamentTaxonomies\Models\Taxonomy;
+use Net7\FilamentTaxonomies\Models\Term;
 use Net7\FilamentTaxonomies\Tests\TestCase;
 
 class TermTest extends TestCase
@@ -71,7 +71,7 @@ class TermTest extends TestCase
 
         // Create a chain of 11 levels (0-10)
         $current = Term::create(['name' => 'Level 0']);
-        
+
         for ($i = 1; $i <= Term::MAX_HIERARCHY_LEVEL; $i++) {
             $current = Term::create([
                 'name' => "Level $i",
@@ -90,13 +90,13 @@ class TermTest extends TestCase
     public function it_belongs_to_many_taxonomies()
     {
         $term = Term::create(['name' => 'Web Development']);
-        
+
         $taxonomy1 = Taxonomy::create([
             'name' => 'Skills',
             'state' => TaxonomyStates::published,
             'type' => TaxonomyTypes::public,
         ]);
-        
+
         $taxonomy2 = Taxonomy::create([
             'name' => 'Categories',
             'state' => TaxonomyStates::published,
@@ -122,7 +122,7 @@ class TermTest extends TestCase
         $term = Term::create(['name' => 'Web Development']);
         $term->taxonomies()->attach($taxonomy->id);
 
-        $expectedUri = env('APP_URL', 'http://localhost') . '/categories/web-development';
+        $expectedUri = env('APP_URL', 'http://localhost').'/categories/web-development';
         $this->assertEquals($expectedUri, $term->generateInternalUri());
     }
 
@@ -130,7 +130,7 @@ class TermTest extends TestCase
     public function it_sets_uri_type_to_internal_by_default()
     {
         $term = Term::create(['name' => 'Test Term']);
-        
+
         $this->assertEquals(UriTypes::internal, $term->uri_type);
         $this->assertNotEmpty($term->uri);
     }
@@ -146,7 +146,7 @@ class TermTest extends TestCase
 
         $this->assertTrue($term->validateExternalUri());
 
-        $term->uri = env('APP_URL', 'http://localhost') . '/test';
+        $term->uri = env('APP_URL', 'http://localhost').'/test';
         $this->assertFalse($term->validateExternalUri());
     }
 }

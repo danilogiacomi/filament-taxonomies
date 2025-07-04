@@ -2,26 +2,20 @@
 
 namespace Net7\FilamentTaxonomies;
 
-use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
-use Filament\Support\Assets\Css;
-use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
-use Livewire\Features\SupportTesting\Testable;
+use Net7\FilamentTaxonomies\Commands\FilamentTaxonomiesCommand;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Net7\FilamentTaxonomies\Commands\FilamentTaxonomiesCommand;
 
 class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
 {
     public static string $name = 'filament-taxonomies';
 
     public static string $viewNamespace = 'filament-taxonomies';
-
-
 
     public function configurePackage(Package $package): void
     {
@@ -66,9 +60,7 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
         }
     }
 
-    public function packageRegistered(): void
-    {
-    }
+    public function packageRegistered(): void {}
 
     public function packageBooted(): void
     {
@@ -88,7 +80,7 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
 
         // Handle Stubs
         if (app()->runningInConsole()) {
-            foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
+            foreach (app(Filesystem::class)->files(__DIR__.'/../stubs/') as $file) {
                 $this->publishes([
                     $file->getRealPath() => base_path("stubs/filament-taxonomies/{$file->getFilename()}"),
                 ], 'filament-taxonomies-stubs');
@@ -98,7 +90,7 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
         // Publish seeders
         if (app()->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../database/seeders' => database_path('seeders'),
+                __DIR__.'/../database/seeders' => database_path('seeders'),
             ], 'filament-taxonomies-seeders');
         }
 
@@ -117,7 +109,6 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
         return [
         ];
     }
-
 
     /**
      * @return array<class-string>
@@ -159,7 +150,7 @@ class FilamentTaxonomiesServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-            'create_filament-taxonomies_table'
+            'create_filament-taxonomies_table',
         ];
     }
 }

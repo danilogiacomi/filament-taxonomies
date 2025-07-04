@@ -2,15 +2,13 @@
 
 namespace Net7\FilamentTaxonomies\Filament\Resources\TermResource\Pages;
 
-use Net7\FilamentTaxonomies\Filament\Resources\TermResource;
-use Net7\FilamentTaxonomies\Models\Term;
-use Net7\FilamentTaxonomies\Enums\UriTypes;
 use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Pages\EditRecord;
+use Net7\FilamentTaxonomies\Enums\UriTypes;
+use Net7\FilamentTaxonomies\Filament\Resources\TermResource;
 
 class EditTerm extends EditRecord
 {
@@ -18,9 +16,9 @@ class EditTerm extends EditRecord
 
     protected function getRedirectUrl(): string
     {
-        return  $this->getResource()::getUrl('index');
+        return $this->getResource()::getUrl('index');
     }
-    
+
     protected function getHeaderActions(): array
     {
         return [
@@ -44,7 +42,7 @@ class EditTerm extends EditRecord
                         ->rules([
                             function (Forms\Get $get) {
                                 return function (string $attribute, $value, \Closure $fail) use ($get) {
-                                    if ($get('is_external_uri') && !empty($value)) {
+                                    if ($get('is_external_uri') && ! empty($value)) {
                                         $appDomain = parse_url(env('APP_URL'), PHP_URL_HOST);
                                         $uriDomain = parse_url($value, PHP_URL_HOST);
                                         if ($uriDomain === $appDomain) {
@@ -73,7 +71,7 @@ class EditTerm extends EditRecord
                         $uriType = UriTypes::internal;
                         $uri = $this->record->generateInternalUri();
                     }
-                    
+
                     $this->record->update([
                         'uri_type' => $uriType,
                         'uri' => $uri,
@@ -83,5 +81,4 @@ class EditTerm extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-
 }

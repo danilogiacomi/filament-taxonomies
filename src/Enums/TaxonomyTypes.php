@@ -14,7 +14,7 @@ enum TaxonomyTypes: string
 
     public function getLabel(): string
     {
-        return match($this) {
+        return match ($this) {
             self::public => 'Public',
             self::restricted => 'Restricted',
             self::private => 'Private',
@@ -23,7 +23,7 @@ enum TaxonomyTypes: string
 
     public function getIcon(): string
     {
-        return match($this) {
+        return match ($this) {
             self::public => 'heroicon-o-globe-alt',
             self::restricted => 'heroicon-o-lock-open',
             self::private => 'heroicon-o-lock-closed',
@@ -32,13 +32,12 @@ enum TaxonomyTypes: string
 
     public function getColor(): string
     {
-        return match($this) {
+        return match ($this) {
             self::public => 'success',
             self::restricted => 'warning',
             self::private => 'danger',
         };
     }
-
 }
 
 // see https://emekambah.medium.com/php-enum-and-use-cases-in-laravel-ac015cf181ad

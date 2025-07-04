@@ -13,7 +13,7 @@ enum TaxonomyStates: string
 
     public function getLabel(): string
     {
-        return match($this) {
+        return match ($this) {
             self::working => 'Working',
             self::published => 'Published',
         };
@@ -21,7 +21,7 @@ enum TaxonomyStates: string
 
     public function getIcon(): string
     {
-        return match($this) {
+        return match ($this) {
             self::working => 'heroicon-o-wrench-screwdriver',
             self::published => 'heroicon-o-check-circle',
         };
@@ -29,12 +29,11 @@ enum TaxonomyStates: string
 
     public function getColor(): string
     {
-        return match($this) {
+        return match ($this) {
             self::working => 'warning',
             self::published => 'success',
         };
     }
-
 }
 
 // see https://emekambah.medium.com/php-enum-and-use-cases-in-laravel-ac015cf181ad

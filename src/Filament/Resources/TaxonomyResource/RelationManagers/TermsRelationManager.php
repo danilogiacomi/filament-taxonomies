@@ -9,8 +9,8 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
-use Net7\FilamentTaxonomies\Models\Term;
 use Net7\FilamentTaxonomies\Enums\UriTypes;
+use Net7\FilamentTaxonomies\Models\Term;
 
 class TermsRelationManager extends RelationManager
 {
@@ -34,7 +34,7 @@ class TermsRelationManager extends RelationManager
                             return function (string $attribute, $value, \Closure $fail) use ($get) {
                                 $termId = $get('id');
                                 $existingTerm = Term::where('name', $value)
-                                    ->when($termId, fn($query) => $query->where('id', '!=', $termId))
+                                    ->when($termId, fn ($query) => $query->where('id', '!=', $termId))
                                     ->whereHas('taxonomies', function ($query) use ($get) {
                                         $taxonomyIds = collect($get('taxonomies') ?? [])->pluck('id')->filter();
                                         if ($taxonomyIds->isNotEmpty()) {
@@ -62,6 +62,7 @@ class TermsRelationManager extends RelationManager
                         // Filter out terms that would create hierarchy level > MAX_HIERARCHY_LEVEL
                         $validParents = $terms->filter(function ($term) {
                             $parentLevel = $term->calculateLevel();
+
                             return ($parentLevel + 1) < Term::MAX_HIERARCHY_LEVEL;
                         });
 
@@ -70,7 +71,7 @@ class TermsRelationManager extends RelationManager
                     ->searchable()
                     ->nullable()
                     ->preload()
-                    ->helperText('Maximum hierarchy depth is ' . Term::MAX_HIERARCHY_LEVEL . ' levels')
+                    ->helperText('Maximum hierarchy depth is '.Term::MAX_HIERARCHY_LEVEL.' levels')
                     ->rules([
                         function () {
                             return function (string $attribute, $value, \Closure $fail) {
@@ -85,7 +86,7 @@ class TermsRelationManager extends RelationManager
                                 if ($value) {
                                     $parentTerm = Term::find($value);
                                     if ($parentTerm && ($parentTerm->calculateLevel() + 1) >= Term::MAX_HIERARCHY_LEVEL) {
-                                        $fail('Selecting this parent would exceed the maximum hierarchy depth of ' . Term::MAX_HIERARCHY_LEVEL . ' levels.');
+                                        $fail('Selecting this parent would exceed the maximum hierarchy depth of '.Term::MAX_HIERARCHY_LEVEL.' levels.');
                                     }
                                 }
                             };
@@ -138,12 +139,12 @@ class TermsRelationManager extends RelationManager
                                 ->required()
                                 ->url()
                                 ->columnSpanFull()
-                                ->disabled(fn (Forms\Get $get) => !$get('is_external_uri'))
+                                ->disabled(fn (Forms\Get $get) => ! $get('is_external_uri'))
                                 ->helperText('Must not use the same domain as this application')
                                 ->rules([
                                     function (Forms\Get $get) {
                                         return function (string $attribute, $value, \Closure $fail) use ($get) {
-                                            if ($get('is_external_uri') && !empty($value)) {
+                                            if ($get('is_external_uri') && ! empty($value)) {
                                                 $appDomain = parse_url(env('APP_URL'), PHP_URL_HOST);
                                                 $uriDomain = parse_url($value, PHP_URL_HOST);
                                                 if ($uriDomain === $appDomain) {
@@ -180,7 +181,7 @@ class TermsRelationManager extends RelationManager
                             ]);
                         }),
                     Tables\Actions\DeleteAction::make(),
-                ])->iconButton()
+                ])->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

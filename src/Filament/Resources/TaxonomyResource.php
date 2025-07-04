@@ -2,9 +2,6 @@
 
 namespace Net7\FilamentTaxonomies\Filament\Resources;
 
-use Filament\Tables\Actions\ActionGroup;
-use Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource\Pages;
-use Net7\FilamentTaxonomies\Models\Taxonomy;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -12,17 +9,21 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 use Net7\FilamentTaxonomies\Enums\TaxonomyStates;
 use Net7\FilamentTaxonomies\Enums\TaxonomyTypes;
+use Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource\Pages;
+use Net7\FilamentTaxonomies\Models\Taxonomy;
 
 class TaxonomyResource extends Resource
 {
     protected static ?string $model = Taxonomy::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
 
     public static function form(Form $form): Form
@@ -43,7 +44,7 @@ class TaxonomyResource extends Resource
                         ->disabled()
                         ->dehydrated()
                         ->helperText('Auto-generated from name'),
-                    Textarea::make('description')
+                    Textarea::make('description'),
                 ]),
                 Section::make([
                     Select::make('state')
@@ -51,7 +52,7 @@ class TaxonomyResource extends Resource
                         ->required(),
                     Select::make('type')
                         ->options(TaxonomyTypes::options())
-                        ->required()
+                        ->required(),
                 ])->columns(2),
             ]);
     }
@@ -79,9 +80,9 @@ class TaxonomyResource extends Resource
             ])
             ->actions([
                 ActionGroup::make([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                ])
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -90,12 +91,12 @@ class TaxonomyResource extends Resource
             ]);
     }
 
-     public static function getRelations(): array
-     {
-         return [
-             TaxonomyResource\RelationManagers\TermsRelationManager::class,
-         ];
-     }
+    public static function getRelations(): array
+    {
+        return [
+            TaxonomyResource\RelationManagers\TermsRelationManager::class,
+        ];
+    }
 
     public static function getPages(): array
     {

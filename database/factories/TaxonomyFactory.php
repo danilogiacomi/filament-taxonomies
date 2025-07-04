@@ -35,7 +35,6 @@ class TaxonomyFactory extends Factory
         ]);
     }
 
-
     public function public(): static
     {
         return $this->state(fn (array $attributes) => [

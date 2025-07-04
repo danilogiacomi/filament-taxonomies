@@ -2,9 +2,8 @@
 
 namespace Net7\FilamentTaxonomies\Filament\Resources\TermResource\Pages;
 
-use Net7\FilamentTaxonomies\Filament\Resources\TermResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use Net7\FilamentTaxonomies\Filament\Resources\TermResource;
 
 class CreateTerm extends CreateRecord
 {
@@ -12,6 +11,6 @@ class CreateTerm extends CreateRecord
 
     protected function getRedirectUrl(): string
     {
-        return  $this->getResource()::getUrl('index');
+        return $this->getResource()::getUrl('index');
     }
 }

@@ -21,7 +21,7 @@ class TermFactory extends Factory
         ];
     }
 
-    public function withParent(Term $parent = null): static
+    public function withParent(?Term $parent = null): static
     {
         return $this->state(fn (array $attributes) => [
             'parent_id' => $parent ? $parent->id : Term::factory()->create()->id,

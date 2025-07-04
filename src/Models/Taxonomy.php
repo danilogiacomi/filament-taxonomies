@@ -20,7 +20,9 @@ class Taxonomy extends Model
     */
 
     protected $table = 'taxonomies';
+
     protected $guarded = ['id'];
+
     protected $fillable = ['name', 'slug', 'description', 'state', 'type', 'uri'];
 
     protected $casts = [

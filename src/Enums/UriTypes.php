@@ -13,7 +13,7 @@ enum UriTypes: string
 
     public function getLabel(): string
     {
-        return match($this) {
+        return match ($this) {
             self::internal => 'Internal (Auto-generated)',
             self::external => 'External (Custom)',
         };

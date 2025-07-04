@@ -3,8 +3,8 @@
 namespace Net7\FilamentTaxonomies\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Net7\FilamentTaxonomies\Models\Term;
 use Net7\FilamentTaxonomies\Models\Taxonomy;
+use Net7\FilamentTaxonomies\Models\Term;
 
 class TermSeeder extends Seeder
 {

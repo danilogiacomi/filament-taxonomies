@@ -2,10 +2,9 @@
 
 namespace Net7\FilamentTaxonomies\Filament\Resources\TermResource\Pages;
 
-use Net7\FilamentTaxonomies\Filament\Resources\TermResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use Net7\FilamentTaxonomies\Models\Term;
+use Net7\FilamentTaxonomies\Filament\Resources\TermResource;
 
 class ListTerms extends ListRecords
 {
@@ -18,12 +17,11 @@ class ListTerms extends ListRecords
         ];
     }
 
-
     protected function getHeaderWidgets(): array
     {
         return [
             // Concept::class
-            
+
         ];
     }
 }

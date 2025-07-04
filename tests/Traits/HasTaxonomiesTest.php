@@ -3,20 +3,19 @@
 namespace Net7\FilamentTaxonomies\Tests\Traits;
 
 use Illuminate\Database\Eloquent\Model;
-use Net7\FilamentTaxonomies\Models\Taxonomy;
-use Net7\FilamentTaxonomies\Models\Term;
-use Net7\FilamentTaxonomies\Models\EntityTerm;
-use Net7\FilamentTaxonomies\Traits\HasTaxonomies;
 use Net7\FilamentTaxonomies\Enums\TaxonomyStates;
 use Net7\FilamentTaxonomies\Enums\TaxonomyTypes;
+use Net7\FilamentTaxonomies\Models\Taxonomy;
+use Net7\FilamentTaxonomies\Models\Term;
 use Net7\FilamentTaxonomies\Tests\TestCase;
+use Net7\FilamentTaxonomies\Traits\HasTaxonomies;
 
 class HasTaxonomiesTest extends TestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create test model table
         $this->app['db']->connection()->getSchemaBuilder()->create('test_models', function ($table) {
             $table->id();
@@ -29,7 +28,7 @@ class HasTaxonomiesTest extends TestCase
     public function it_can_set_and_get_terms_by_taxonomy_id()
     {
         $model = TestModel::create(['name' => 'Test Model']);
-        
+
         $taxonomy = Taxonomy::create([
             'name' => 'Categories',
             'state' => TaxonomyStates::published,
@@ -42,7 +41,7 @@ class HasTaxonomiesTest extends TestCase
         $model->setTermsForTaxonomyId($taxonomy->id, [$term1->id, $term2->id]);
 
         $retrievedTerms = $model->getTermsForTaxonomyId($taxonomy->id);
-        
+
         $this->assertCount(2, $retrievedTerms);
         $this->assertTrue($retrievedTerms->contains('name', 'Term 1'));
         $this->assertTrue($retrievedTerms->contains('name', 'Term 2'));
@@ -52,7 +51,7 @@ class HasTaxonomiesTest extends TestCase
     public function it_can_set_and_get_terms_by_taxonomy_slug()
     {
         $model = TestModel::create(['name' => 'Test Model']);
-        
+
         $taxonomy = Taxonomy::create([
             'name' => 'Product Categories',
             'state' => TaxonomyStates::published,
@@ -65,7 +64,7 @@ class HasTaxonomiesTest extends TestCase
         $model->setTermsForTaxonomySlug('product-categories', [$term1->id, $term2->id]);
 
         $retrievedTerms = $model->getTermsForTaxonomySlug('product-categories');
-        
+
         $this->assertCount(2, $retrievedTerms);
         $this->assertTrue($retrievedTerms->contains('name', 'Term 1'));
         $this->assertTrue($retrievedTerms->contains('name', 'Term 2'));
@@ -75,7 +74,7 @@ class HasTaxonomiesTest extends TestCase
     public function it_can_check_if_entity_has_term_in_taxonomy()
     {
         $model = TestModel::create(['name' => 'Test Model']);
-        
+
         $taxonomy = Taxonomy::create([
             'name' => 'Categories',
             'state' => TaxonomyStates::published,
@@ -94,7 +93,7 @@ class HasTaxonomiesTest extends TestCase
     public function it_replaces_terms_when_setting_new_ones()
     {
         $model = TestModel::create(['name' => 'Test Model']);
-        
+
         $taxonomy = Taxonomy::create([
             'name' => 'Categories',
             'state' => TaxonomyStates::published,
@@ -112,7 +111,7 @@ class HasTaxonomiesTest extends TestCase
         // Replace with new terms
         $model->setTermsForTaxonomyId($taxonomy->id, [$term3->id]);
         $retrievedTerms = $model->getTermsForTaxonomyId($taxonomy->id);
-        
+
         $this->assertCount(1, $retrievedTerms);
         $this->assertTrue($retrievedTerms->contains('name', 'Term 3'));
         $this->assertFalse($retrievedTerms->contains('name', 'Term 1'));
@@ -122,7 +121,7 @@ class HasTaxonomiesTest extends TestCase
     public function it_automatically_deletes_entity_terms_when_model_is_deleted()
     {
         $model = TestModel::create(['name' => 'Test Model']);
-        
+
         $taxonomy = Taxonomy::create([
             'name' => 'Categories',
             'state' => TaxonomyStates::published,
@@ -155,7 +154,7 @@ class HasTaxonomiesTest extends TestCase
     public function legacy_methods_still_work_with_taxonomy_names()
     {
         $model = TestModel::create(['name' => 'Test Model']);
-        
+
         $taxonomy = Taxonomy::create([
             'name' => 'Product Categories',
             'state' => TaxonomyStates::published,
@@ -167,7 +166,7 @@ class HasTaxonomiesTest extends TestCase
         // Test legacy name-based methods
         $model->setTermsForTaxonomy('Product Categories', [$term->id]);
         $retrievedTerms = $model->getTermsForTaxonomy('Product Categories');
-        
+
         $this->assertCount(1, $retrievedTerms);
         $this->assertTrue($retrievedTerms->contains('name', 'Test Term'));
         $this->assertTrue($model->hasTermInTaxonomy('Product Categories', $term->id));
@@ -193,5 +192,6 @@ class TestModel extends Model
     use HasTaxonomies;
 
     protected $fillable = ['name'];
+
     protected $table = 'test_models';
 }
