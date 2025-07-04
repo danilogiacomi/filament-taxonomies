@@ -15,6 +15,7 @@ class TaxonomySelect extends Select
     protected int|null $maxLevel = null;
     protected int|null $minLevel = null;
     protected int|null $exactLevel = null;
+    protected string|null $parentItemFrom = null;
 
     public function multiple(Closure|bool $condition = true): static
     {
@@ -89,17 +90,33 @@ class TaxonomySelect extends Select
         return $this->evaluate($this->isMultiple);
     }
 
+    public function parentItemFrom(string $parentItemFrom): static
+    {
+        $this->parentItemFrom = $parentItemFrom;
+        return $this;
+    }
+
     public function taxonomy(string $taxonomySlug): static
     {
         $this->taxonomy = $taxonomySlug;
 
-        $this->options(function () use ($taxonomySlug) {
+        $this->options(function ($get) use ($taxonomySlug) {
             $taxonomyModel = Taxonomy::where('slug', $taxonomySlug)->first();
             if (!$taxonomyModel) {
                 return [];
             }
 
-            $terms = $taxonomyModel->terms;
+            if ($this->parentItemFrom) {
+                $parentItemId = $get($this->parentItemFrom);
+                if (!$parentItemId) {
+                    return [];
+                }
+
+                $terms = $taxonomyModel->terms->where('parent_id', $parentItemId);
+            } else {
+                $terms = $taxonomyModel->terms;
+            }
+
 
             if ($this->exactLevel !== null || $this->minLevel !== null || $this->maxLevel !== null) {
                 $terms = $terms->filter(function ($term) {

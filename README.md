@@ -139,6 +139,23 @@ TaxonomySelect::make('mid_level_categories')
     ->minLevel(1)
     ->maxLevel(3)
     ->multiple(),
+
+// Sub-levels - two selects where one is used to choose the first level item, then the second select
+// is forced to choose among sub-items of the one chosen in the first
+
+TaxonomySelect::make('categories')
+    ->taxonomy('product-categories')
+    ->afterStateUpdated(function ($state, callable $set) {
+        if ($state) {
+            $set('sub-categories', null);
+        }
+    })
+    ->reactive(),
+
+TaxonomySelect::make('sub-categories')
+    ->taxonomy('product-categories')
+    ->parentItemFrom('categories')
+    ->disabled(fn ($get) => ! $get('categories')),
 ```
 
 ### Slug-Based Operations
