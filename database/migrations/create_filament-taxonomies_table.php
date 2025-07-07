@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('uri', 1100);
             $table->string('exact_match_uri')->nullable();
             $table->enum('uri_type', UriTypes::names())->default(UriTypes::internal->value);
+            $table->json('aliases')->nullable();
         });
 
         Schema::create('taxonomy_term', function (Blueprint $table) {
@@ -46,7 +47,7 @@ return new class extends Migration
             $table->id();
             $table->string('entity_type');
             $table->unsignedBigInteger('entity_id');
-            $table->string('type');
+            $table->string('type')->nullable();
             $table->foreignId('taxonomy_id')->constrained('taxonomies')->onDelete('cascade');
             $table->foreignId('term_id')->constrained()->onDelete('cascade');
             $table->timestamps();

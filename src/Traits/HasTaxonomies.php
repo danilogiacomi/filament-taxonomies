@@ -147,14 +147,13 @@ trait HasTaxonomies
     }
 
     /**
-     * 
      * To be implemented in the model using this trait
-     * 
+     *
      * This is optional, filament doesn't need this per-se, but if you want to get access
      * to terms from the model, using a relation method, you can populate this array
-     * with the method name and the taxonomy_term type. 
+     * with the method name and the taxonomy_term type.
      * It will do the magic.
-     * 
+     *
      *
      * It's an array of methodName => taxonomy_term type
      * Example:
@@ -163,20 +162,20 @@ trait HasTaxonomies
      *     'complexity' => 'complessità',
      *     'specific_complexity' => 'complessità-specifica',
      * ];
-     * 
+     *
      * And it will return the terms for the taxonomy_term type
      *
-     * 
+     *
      * This way you can do things like this:
-     * 
+     *
      * $modelInstance->complexity
      * $modelInstance->specific_complexity
-     * 
+     *
      * and get a collection of terms, or you can do:
-     * 
+     *
      * $modelInstance->complexity()
      * $modelInstance->specific_complexity()
-     * 
+     *
      * and get the Relations
      *
      * @return array
@@ -249,9 +248,8 @@ trait HasTaxonomies
         return parent::__get($key);
     }
 
-
     public function getAttribute($key)
-{
+    {
         $relation = $this->getTermsResolver($key);
 
         if ($relation instanceof Relation) {
@@ -262,7 +260,7 @@ trait HasTaxonomies
                 ->pluck('term.name')
                 ->implode(', ');
         }
-        
-    return parent::getAttribute($key);
-}
+
+        return parent::getAttribute($key);
+    }
 }

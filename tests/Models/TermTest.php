@@ -149,4 +149,36 @@ class TermTest extends TestCase
         $term->uri = env('APP_URL', 'http://localhost').'/test';
         $this->assertFalse($term->validateExternalUri());
     }
+
+
+    public function it_can_find_term_by_taxonomy_id_and_name_or_slug_or_alias()
+    {
+        $taxonomy = Taxonomy::create([
+            'name' => 'Categories',
+            'state' => TaxonomyStates::published,
+            'type' => TaxonomyTypes::public,
+        ]);
+
+        $term = Term::create([
+            'name' => 'Web Development',
+            'slug' => 'web-development',
+            'aliases' => ['Web Dev', 'Web Development', 'Web'],
+            'taxonomies' => [$taxonomy->id],
+        ]);
+
+        $foundTerm = $term->findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'Web Development');
+        $this->assertEquals($term->id, $foundTerm->id);
+
+        $foundTerm = $term->findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'Web Dev');
+        $this->assertEquals($term->id, $foundTerm->id);
+
+        $foundTerm = $term->findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'web-development');
+        $this->assertEquals($term->id, $foundTerm->id);
+
+        $foundTerm = $term->findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'Web');
+        $this->assertEquals($term->id, $foundTerm->id);
+
+        $foundTerm = $term->findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'development');
+        $this->assertNull($foundTerm);
+    }
 }

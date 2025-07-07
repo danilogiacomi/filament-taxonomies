@@ -3,6 +3,7 @@
 namespace Net7\FilamentTaxonomies\Filament\Resources\TaxonomyResource\RelationManagers;
 
 use Filament\Forms;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -94,6 +95,9 @@ class TermsRelationManager extends RelationManager
                     ]),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
+                TagsInput::make('aliases')
+                    ->label('Aliases')
+                    ->placeholder('e.g. Machine Learning, Clinical Trials'),
             ]);
     }
 

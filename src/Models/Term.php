@@ -24,7 +24,12 @@ class Term extends Model
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['name', 'slug', 'description', 'parent_id', 'uri', 'uri_type', 'exact_match_uri'];
+    protected $fillable = ['name', 'slug', 'description', 'parent_id', 'uri', 'uri_type', 'exact_match_uri', 'codes'];
+
+    protected $casts = [
+        'aliases' => 'array',
+        'uri_type' => UriTypes::class,
+    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -61,6 +66,18 @@ class Term extends Model
         return ($parentLevel + 1) <= self::MAX_HIERARCHY_LEVEL;
     }
 
+    public function findByTaxonomyIdAndNameOrSlugOrAlias(int $taxonomyId, string $nameOrAlias): ?self
+    {
+        return
+            $this->whereHas('taxonomies', function ($query) use ($taxonomyId) {
+                $query->where('taxonomies.id', $taxonomyId);
+            })
+                ->where('name', $nameOrAlias)
+                ->orWhere('slug', $nameOrAlias)
+                ->orWhereJsonContains('alias', $nameOrAlias)
+                ->first();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -86,10 +103,6 @@ class Term extends Model
     {
         return TermFactory::new();
     }
-
-    protected $casts = [
-        'uri_type' => UriTypes::class,
-    ];
 
     protected static function booted()
     {
