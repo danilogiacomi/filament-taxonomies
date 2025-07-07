@@ -66,7 +66,7 @@ class Term extends Model
         return ($parentLevel + 1) <= self::MAX_HIERARCHY_LEVEL;
     }
 
-    public function findByTaxonomyIdAndNameOrSlugOrAlias(int $taxonomyId, string $nameOrAlias): ?self
+    public static function findByTaxonomyIdAndNameOrSlugOrAlias(int $taxonomyId, string $nameOrAlias): ?self
     {
         return
             $this->whereHas('taxonomies', function ($query) use ($taxonomyId) {

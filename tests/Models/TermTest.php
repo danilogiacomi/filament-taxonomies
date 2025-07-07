@@ -122,7 +122,7 @@ class TermTest extends TestCase
         $term = Term::create(['name' => 'Web Development']);
         $term->taxonomies()->attach($taxonomy->id);
 
-        $expectedUri = env('APP_URL', 'http://localhost').'/categories/web-development';
+        $expectedUri = env('APP_URL', 'http://localhost').'/taxonomies/categories/web-development';
         $this->assertEquals($expectedUri, $term->generateInternalUri());
     }
 
@@ -166,19 +166,19 @@ class TermTest extends TestCase
             'taxonomies' => [$taxonomy->id],
         ]);
 
-        $foundTerm = $term->findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'Web Development');
+        $foundTerm = Term::findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'Web Development');
         $this->assertEquals($term->id, $foundTerm->id);
 
-        $foundTerm = $term->findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'Web Dev');
+        $foundTerm = Term::findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'Web Dev');
         $this->assertEquals($term->id, $foundTerm->id);
 
-        $foundTerm = $term->findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'web-development');
+        $foundTerm = Term::findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'web-development');
         $this->assertEquals($term->id, $foundTerm->id);
 
-        $foundTerm = $term->findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'Web');
+        $foundTerm = Term::findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'Web');
         $this->assertEquals($term->id, $foundTerm->id);
 
-        $foundTerm = $term->findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'development');
+        $foundTerm = Term::findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'development');
         $this->assertNull($foundTerm);
     }
 }
