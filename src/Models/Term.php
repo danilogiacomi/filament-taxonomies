@@ -24,7 +24,7 @@ class Term extends Model
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['name', 'slug', 'description', 'parent_id', 'uri', 'uri_type', 'exact_match_uri', 'codes'];
+    protected $fillable = ['name', 'slug', 'description', 'parent_id', 'uri', 'uri_type', 'exact_match_uri', 'aliases'];
 
     protected $casts = [
         'aliases' => 'array',
