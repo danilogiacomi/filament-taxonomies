@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('uri', 1100);
             $table->string('exact_match_uri')->nullable();
             $table->enum('uri_type', UriTypes::names())->default(UriTypes::internal->value);
+            $table->json('codes')->nullable();
         });
 
         Schema::create('taxonomy_term', function (Blueprint $table) {

@@ -24,7 +24,12 @@ class Term extends Model
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['name', 'slug', 'description', 'parent_id', 'uri', 'uri_type', 'exact_match_uri'];
+    protected $fillable = ['name', 'slug', 'description', 'parent_id', 'uri', 'uri_type', 'exact_match_uri', 'codes'];
+
+    protected $casts = [
+        'codes' => 'array',
+        'uri_type' => UriTypes::class,
+    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -87,9 +92,7 @@ class Term extends Model
         return TermFactory::new();
     }
 
-    protected $casts = [
-        'uri_type' => UriTypes::class,
-    ];
+  
 
     protected static function booted()
     {

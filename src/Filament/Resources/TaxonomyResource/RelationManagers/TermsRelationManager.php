@@ -11,6 +11,7 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
 use Net7\FilamentTaxonomies\Enums\UriTypes;
 use Net7\FilamentTaxonomies\Models\Term;
+use Filament\Forms\Components\TagsInput;
 
 class TermsRelationManager extends RelationManager
 {
@@ -94,6 +95,9 @@ class TermsRelationManager extends RelationManager
                     ]),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
+                TagsInput::make('codes')
+                    ->label('Codes')
+                    ->placeholder('e.g. Machine Learning, Clinical Trials'),
             ]);
     }
 
