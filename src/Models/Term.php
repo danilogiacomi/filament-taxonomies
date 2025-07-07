@@ -152,7 +152,7 @@ class Term extends Model
 
     public function generateInternalUri(): string
     {
-        $baseUrl = rtrim(env('APP_URL', 'http://localhost'), '/');
+        $baseUrl = rtrim(env('APP_URL', 'http://localhost'), '/') . '/taxonomies';
         $termSlug = Str::slug($this->name);
 
         $taxonomy = $this->taxonomies()->first();
