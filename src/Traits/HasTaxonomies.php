@@ -33,10 +33,44 @@ trait HasTaxonomies
     }
 
     /**
+     * Get terms for relation type (recommended)
+     */
+    public function getTermsForRelationType(string $relationType)
+    {
+        return $this->entityTerms()
+            ->where('type', $relationType)
+            ->with('term')
+            ->get()
+            ->pluck('term');
+    }
+
+
+    /**
+     * Check if entity has term in taxonomy by ID (recommended)
+     */
+    public function hasTermInTaxonomyId(int $taxonomyId, int $termId): bool
+    {
+        return $this->entityTerms()
+            ->where('taxonomy_id', $taxonomyId)
+            ->where('term_id', $termId)
+            ->exists();
+    }
+
+
+    /**
      * Set terms for taxonomy by ID (recommended)
      */
-    public function setTermsForTaxonomyId(int $taxonomyId, array $termIds): void
+    public function setTermsForTaxonomyId(int $taxonomyId, array $termIds, string|null $relationType = null): void
     {
+        if ($relationType === null) {
+            $taxonomy = Taxonomy::find($taxonomyId);
+            if (! $taxonomy) {
+                return;
+            }
+
+            $relationType = $taxonomy->slug;
+        }
+
         // Remove existing terms for this taxonomy
         $this->entityTerms()
             ->where('taxonomy_id', $taxonomyId)
@@ -47,17 +81,17 @@ trait HasTaxonomies
             $this->entityTerms()->create([
                 'taxonomy_id' => $taxonomyId,
                 'term_id' => $termId,
+                'type' => $relationType,
             ]);
         }
     }
 
-    /**
-     * Check if entity has term in taxonomy by ID (recommended)
-     */
-    public function hasTermInTaxonomyId(int $taxonomyId, int $termId): bool
+
+
+    public function hasTermInRelationType(string $relationType, int $termId): bool
     {
         return $this->entityTerms()
-            ->where('taxonomy_id', $taxonomyId)
+            ->where('type', $relationType)
             ->where('term_id', $termId)
             ->exists();
     }
@@ -78,14 +112,18 @@ trait HasTaxonomies
     /**
      * Set terms for taxonomy by slug (recommended)
      */
-    public function setTermsForTaxonomySlug(string $taxonomySlug, array $termIds): void
+    public function setTermsForTaxonomySlug(string $taxonomySlug, array $termIds, string|null $relationType = null): void
     {
         $taxonomy = Taxonomy::where('slug', $taxonomySlug)->first();
         if (! $taxonomy) {
             return;
         }
 
-        $this->setTermsForTaxonomyId($taxonomy->id, $termIds);
+        if ($relationType === null) {
+            $relationType = $taxonomy->slug;
+        }
+
+        $this->setTermsForTaxonomyId($taxonomy->id, $termIds, $relationType);
     }
 
     /**
@@ -253,12 +291,7 @@ trait HasTaxonomies
         $relation = $this->getTermsResolver($key);
 
         if ($relation instanceof Relation) {
-            return $this->entityTerms()
-                ->where('type', $this->termsTypeMapping()[$key])
-                ->with('term')
-                ->get()
-                ->pluck('term.name')
-                ->implode(', ');
+            return $this->getTermsForTaxonomySlug($relation);
         }
 
         return parent::getAttribute($key);
