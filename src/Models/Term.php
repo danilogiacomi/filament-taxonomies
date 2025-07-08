@@ -69,12 +69,12 @@ class Term extends Model
     public static function findByTaxonomyIdAndNameOrSlugOrAlias(int $taxonomyId, string $nameOrAlias): ?self
     {
         return
-            $this->whereHas('taxonomies', function ($query) use ($taxonomyId) {
+            Term::whereHas('taxonomies', function ($query) use ($taxonomyId) {
                 $query->where('taxonomies.id', $taxonomyId);
             })
                 ->where('name', $nameOrAlias)
                 ->orWhere('slug', $nameOrAlias)
-                ->orWhereJsonContains('alias', $nameOrAlias)
+                ->orWhereJsonContains('aliases', $nameOrAlias)
                 ->first();
     }
 
