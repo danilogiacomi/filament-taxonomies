@@ -78,6 +78,20 @@ class Term extends Model
                 ->first();
     }
 
+    public static function findByTaxonomyIdAndParentIdAndNameOrSlugOrAlias(int $taxonomyId, int $parentId, string $nameOrAlias): ?self
+    {
+        return Term::whereHas('taxonomies', function ($query) use ($taxonomyId) {
+                $query->where('taxonomies.id', $taxonomyId);
+            })
+            ->where('parent_id', $parentId)
+            ->where(function ($query) use ($nameOrAlias) {
+                $query->where('name', $nameOrAlias)
+                    ->orWhere('slug', $nameOrAlias)
+                    ->orWhereJsonContains('aliases', $nameOrAlias);
+            })
+            ->first();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

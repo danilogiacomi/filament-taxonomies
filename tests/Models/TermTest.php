@@ -150,7 +150,7 @@ class TermTest extends TestCase
         $this->assertFalse($term->validateExternalUri());
     }
 
-
+    /** @test */
     public function it_can_find_term_by_taxonomy_id_and_name_or_slug_or_alias()
     {
         $taxonomy = Taxonomy::create([
@@ -163,8 +163,8 @@ class TermTest extends TestCase
             'name' => 'Web Development',
             'slug' => 'web-development',
             'aliases' => ['Web Dev', 'Web Development', 'Web'],
-            'taxonomies' => [$taxonomy->id],
         ]);
+        $term->taxonomies()->attach($taxonomy->id);
 
         $foundTerm = Term::findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'Web Development');
         $this->assertEquals($term->id, $foundTerm->id);
@@ -179,6 +179,49 @@ class TermTest extends TestCase
         $this->assertEquals($term->id, $foundTerm->id);
 
         $foundTerm = Term::findByTaxonomyIdAndNameOrSlugOrAlias($taxonomy->id, 'development');
+        $this->assertNull($foundTerm);
+
+        $foundTerm = Term::findByTaxonomyIdAndNameOrSlugOrAlias(-20, 'Web');
+        $this->assertEquals($term->id, $foundTerm->id);
+    }
+
+    /** @test */
+    public function it_can_find_term_by_taxonomy_id_and_and_parent_id_and_name_or_slug_or_alias()
+    {
+        $taxonomy = Taxonomy::create([
+            'name' => 'Categories',
+            'state' => TaxonomyStates::published,
+            'type' => TaxonomyTypes::public,
+        ]);
+        $taxonomy->refresh();
+
+        $parent = Term::create([
+            'name' => 'Parent',
+            'slug' => 'parent',
+        ]);
+        $parent->taxonomies()->attach($taxonomy->id);
+        $parent->refresh();
+
+        $child = Term::create([
+            'name' => 'Child',
+            'slug' => 'child',
+            'parent_id' => $parent->id,
+        ]);
+        $child->taxonomies()->attach($taxonomy->id);
+        $child->refresh();
+
+
+        $this->assertEquals('Child', $child->name);
+        $this->assertEquals('child', $child->slug);
+        $this->assertEquals($parent->id, $child->parent_id);
+        $this->assertEquals($taxonomy->id, $child->taxonomies->first()->id);
+
+
+        $foundTerm = Term::findByTaxonomyIdAndParentIdAndNameOrSlugOrAlias($taxonomy->id, $parent->id, 'Child');
+        $this->assertNotNull($foundTerm);
+        $this->assertEquals($child->id, $foundTerm->id);
+
+        $foundTerm = Term::findByTaxonomyIdAndParentIdAndNameOrSlugOrAlias($taxonomy->id, -20, 'Child');
         $this->assertNull($foundTerm);
     }
 }

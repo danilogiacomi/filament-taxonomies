@@ -30,24 +30,25 @@ class TermsRelationManager extends RelationManager
                             $set('slug', \Illuminate\Support\Str::slug($state));
                         }
                     })
-                    ->rules([
-                        function (Forms\Get $get) {
-                            return function (string $attribute, $value, \Closure $fail) use ($get) {
-                                $termId = $get('id');
-                                $existingTerm = Term::where('name', $value)
-                                    ->when($termId, fn ($query) => $query->where('id', '!=', $termId))
-                                    ->whereHas('taxonomies', function ($query) use ($get) {
-                                        $taxonomyIds = collect($get('taxonomies') ?? [])->pluck('id')->filter();
-                                        if ($taxonomyIds->isNotEmpty()) {
-                                            $query->whereIn('taxonomies.id', $taxonomyIds);
-                                        }
-                                    })->first();
-                                if ($existingTerm) {
-                                    $fail('The name has already been taken inside the current taxonomy.');
-                                }
-                            };
-                        },
-                    ]),
+                    // ->rules([
+                    //     function (Forms\Get $get) {
+                    //         return function (string $attribute, $value, \Closure $fail) use ($get) {
+                    //             $termId = $get('id');
+                    //             $existingTerm = Term::where('name', $value)
+                    //                 ->when($termId, fn ($query) => $query->where('id', '!=', $termId))
+                    //                 ->whereHas('taxonomies', function ($query) use ($get) {
+                    //                     $taxonomyIds = collect($get('taxonomies') ?? [])->pluck('id')->filter();
+                    //                     if ($taxonomyIds->isNotEmpty()) {
+                    //                         $query->whereIn('taxonomies.id', $taxonomyIds);
+                    //                     }
+                    //                 })->first();
+                    //             if ($existingTerm) {
+                    //                 $fail('The name has already been taken inside the current taxonomy.');
+                    //             }
+                    //         };
+                    //     },
+                    // ])
+                    ,
                 Forms\Components\TextInput::make('slug')
                     ->disabled()
                     ->dehydrated()
