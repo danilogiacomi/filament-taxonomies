@@ -165,7 +165,7 @@ class TaxonomySelect extends Select
                 });
             }
 
-            return $terms->pluck('name', 'id')->toArray();
+            return $terms->sortBy('name')->pluck('name', 'id')->toArray();
         });
 
         $this->dehydrated(false);
