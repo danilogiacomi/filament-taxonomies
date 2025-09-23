@@ -204,9 +204,9 @@ class TaxonomySelect extends Select
                 }
 
                 if ($this->evaluate($this->isMultiple)) {
-                    $this->saveMultipleEntityTerms($record, $taxonomyModel->id, $state);
+                    $this->saveMultipleEntityTerms($record, $taxonomyModel->id, $state, $this->getType());
                 } else {
-                    $this->saveEntityTerm($record, $taxonomyModel->id, $state);
+                    $this->saveEntityTerm($record, $taxonomyModel->id, $state, $this->getType());
                 }
             }
         });
@@ -214,11 +214,12 @@ class TaxonomySelect extends Select
         return $this;
     }
 
-    protected function saveMultipleEntityTerms($record, int $taxonomyId, array $termIds): void
+    protected function saveMultipleEntityTerms($record, int $taxonomyId, array $termIds, string $type): void
     {
         EntityTerm::where('entity_type', get_class($record))
             ->where('entity_id', $record->id)
             ->where('taxonomy_id', $taxonomyId)
+            ->where('type', $type)
             ->delete();
 
         if (! empty($termIds)) {
@@ -229,7 +230,7 @@ class TaxonomySelect extends Select
                     'entity_id' => $record->id,
                     'taxonomy_id' => $taxonomyId,
                     'term_id' => $termId,
-                    'type' => $this->getType(),
+                    'type' => $type,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
@@ -239,7 +240,7 @@ class TaxonomySelect extends Select
         }
     }
 
-    protected function saveEntityTerm($record, int $taxonomyId, $termId): void
+    protected function saveEntityTerm($record, int $taxonomyId, $termId, string $type): void
     {
         if ($termId) {
             EntityTerm::updateOrCreate(
@@ -247,7 +248,7 @@ class TaxonomySelect extends Select
                     'entity_type' => get_class($record),
                     'entity_id' => $record->id,
                     'taxonomy_id' => $taxonomyId,
-                    'type' => $this->getType(),
+                    'type' => $type,
                 ],
                 [
                     'term_id' => $termId,
@@ -257,6 +258,7 @@ class TaxonomySelect extends Select
             EntityTerm::where('entity_type', get_class($record))
                 ->where('entity_id', $record->id)
                 ->where('taxonomy_id', $taxonomyId)
+                ->where('type', $type)
                 ->delete();
         }
     }
