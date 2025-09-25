@@ -74,6 +74,7 @@ trait HasTaxonomies
         // Remove existing terms for this taxonomy
         $this->entityTerms()
             ->where('taxonomy_id', $taxonomyId)
+            ->where('type', $relationType)
             ->delete();
 
         // Add new terms
