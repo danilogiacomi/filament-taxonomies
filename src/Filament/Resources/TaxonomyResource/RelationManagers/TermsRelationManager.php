@@ -21,9 +21,11 @@ class TermsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\Textarea::make('name')
                     ->required()
-                    ->maxLength(255)
+                    ->columnSpanFull()
+                    ->maxLength(1000)
+                    ->autosize()
                     ->live(onBlur: true)
                     ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, ?string $state) {
                         if ($state) {
@@ -49,12 +51,16 @@ class TermsRelationManager extends RelationManager
                     //     },
                     // ])
                     ,
-                Forms\Components\TextInput::make('slug')
+                Forms\Components\Textarea::make('slug')
+                    ->columnSpanFull()
+                    ->maxLength(1000)
+                    ->autosize()
                     ->disabled()
                     ->dehydrated()
                     ->helperText('Auto-generated from name'),
                 Forms\Components\Select::make('parent_id')
                     ->label('Parent Term')
+                    ->columnSpanFull()
                     ->options(function (Forms\Get $get) {
                         $currentId = $get('id');
 
